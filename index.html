@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Sing-Box 配置详解 · 逐行注释版</title>
+    <title>Sing-Box 配置详解 · 日夜模式全适配</title>
     <style>
         * {
             margin: 0;
@@ -11,28 +11,107 @@
             box-sizing: border-box;
         }
 
+        /* 明亮主题 (默认) */
+        :root {
+            --bg-body: #f5f7fb;
+            --bg-container: #ffffff;
+            --text-primary: #1e2f3e;
+            --border-color: #e6edf2;
+            --header-bg: #1a2c3c;
+            --header-text: #ffffff;
+            --header-border: #3b82b6;
+            --code-bg: #0f172a;
+            --code-text: #e2e8f0;
+            --comment-color: #90e0ff;
+            --json-key: #facc15;
+            --json-string: #86efac;
+            --json-number: #fda4af;
+            --json-boolean: #c4b5fd;
+            --note-bg: #fef9e3;
+            --note-border: #eab308;
+            --note-text: #7a5c00;
+            --hr-color: #e2e8f0;
+            --footer-text: #5b6e8c;
+            --toggle-bg: #e2e8f0;
+            --toggle-circle: #1e2f3e;
+            --scrollbar-thumb: #cbd5e1;
+            --scrollbar-track: #e2e8f0;
+        }
+
+        /* 暗色主题 */
+        body.dark {
+            --bg-body: #0f172a;
+            --bg-container: #1e293b;
+            --text-primary: #e2e8f0;
+            --border-color: #334155;
+            --header-bg: #0f172a;
+            --header-text: #f1f5f9;
+            --header-border: #3b82b6;
+            --code-bg: #020617;
+            --code-text: #cbd5e1;
+            --comment-color: #7dd3fc;
+            --json-key: #facc15;
+            --json-string: #4ade80;
+            --json-number: #fda4af;
+            --json-boolean: #a78bfa;
+            --note-bg: #2d3a3f;
+            --note-border: #eab308;
+            --note-text: #fde047;
+            --hr-color: #334155;
+            --footer-text: #94a3b8;
+            --toggle-bg: #334155;
+            --toggle-circle: #facc15;
+            --scrollbar-thumb: #475569;
+            --scrollbar-track: #1e293b;
+        }
+
         body {
-            background: #f5f7fb;
-            font-family: system-ui, 'Segoe UI', 'Roboto', 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            background: var(--bg-body);
+            font-family: system-ui, 'Segoe UI', 'Roboto', 'SF Mono', 'Fira Code', monospace;
             padding: 2rem 1rem;
-            color: #1e2f3e;
+            color: var(--text-primary);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        /* 滚动条适配 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--json-key);
         }
 
         .container {
             max-width: 1300px;
             margin: 0 auto;
-            background: white;
+            background: var(--bg-container);
             border-radius: 28px;
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            border: 1px solid #e6edf2;
+            border: 1px solid var(--border-color);
+            transition: background 0.2s, border-color 0.2s;
         }
 
         .header {
-            background: #1a2c3c;
-            color: white;
+            background: var(--header-bg);
+            color: var(--header-text);
             padding: 1.5rem 2rem;
-            border-bottom: 4px solid #3b82b6;
+            border-bottom: 4px solid var(--header-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            transition: background 0.2s, color 0.2s;
         }
 
         .header h1 {
@@ -53,28 +132,77 @@
             border-radius: 40px;
             color: #d9e9ff;
         }
+        body.dark .header h1 small {
+            background: #334155;
+            color: #cbd5e1;
+        }
 
-        .header p {
-            margin-top: 0.6rem;
-            opacity: 0.85;
+        .theme-switch {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+        }
+        .theme-switch span {
             font-size: 0.9rem;
-            font-family: system-ui;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--toggle-bg);
+            transition: 0.3s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--toggle-circle);
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #3b82b6;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
         }
 
         .config-body {
             padding: 1.8rem 2rem 2rem;
         }
 
-        /* 代码区域样式 */
         .code-block {
-            background: #0f172a;
-            color: #e2e8f0;
+            background: var(--code-bg);
+            color: var(--code-text);
             border-radius: 20px;
             overflow-x: auto;
             font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
             font-size: 0.85rem;
             line-height: 1.55;
-            box-shadow: inset 0 0 0 1px #334155, 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: inset 0 0 0 1px var(--border-color), 0 8px 20px rgba(0,0,0,0.1);
+            transition: background 0.2s, color 0.2s;
         }
 
         .code-block pre {
@@ -85,60 +213,46 @@
             tab-size: 2;
         }
 
-        /* 注释行样式 (以 // 或 --> 开头) */
         .comment-line {
-            color: #7dd3fc;
-            font-style: normal;
-            font-weight: normal;
-            display: inline-block;
-            margin-left: 0.5rem;
+            color: var(--comment-color);
         }
-
-        /* 让JSON键名高亮 */
         .json-key {
-            color: #facc15;
+            color: var(--json-key);
         }
-
         .json-string {
-            color: #86efac;
+            color: var(--json-string);
         }
-
         .json-number {
-            color: #fda4af;
+            color: var(--json-number);
         }
-
         .json-boolean {
-            color: #c4b5fd;
+            color: var(--json-boolean);
         }
 
-        .json-null {
-            color: #94a3b8;
-        }
-
-        /* 为了保持清晰，使用简单样式，重点突出注释 */
         .note-tip {
-            background: #fef9e3;
-            border-left: 5px solid #eab308;
+            background: var(--note-bg);
+            border-left: 5px solid var(--note-border);
             padding: 0.9rem 1.2rem;
             border-radius: 16px;
             margin-top: 1.8rem;
             font-size: 0.85rem;
             font-family: system-ui;
-            color: #7a5c00;
+            color: var(--note-text);
+            transition: background 0.2s, color 0.2s;
         }
 
         hr {
             margin: 1.5rem 0;
             border: none;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid var(--hr-color);
         }
 
         .footer-note {
             text-align: center;
             margin-top: 2rem;
             font-size: 0.75rem;
-            color: #5b6e8c;
-            border-top: 1px solid #e2edf2;
+            color: var(--footer-text);
+            border-top: 1px solid var(--hr-color);
             padding-top: 1.5rem;
         }
 
@@ -159,118 +273,127 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>
-            📄 Sing-Box 完整配置 · 逐行注释手册
-            <small>小白友好版</small>
-        </h1>
-        <p>👇 每一行配置后面都有 <span style="background:#2d4a6e; padding:2px 8px; border-radius:20px;">→ 箭头注释</span> 或 <span style="background:#2d4a6e; padding:2px 8px; border-radius:20px;">// 说明</span> ，一眼看懂每个参数的作用。</p>
+        <div>
+            <h1>
+                📄 Sing-Box 完整配置 · 逐行注释手册
+                <small>小白友好版 · 全主题适配</small>
+            </h1>
+            <p>👇 每一行配置后面都有 <span style="background:#2d4a6e; padding:2px 8px; border-radius:20px;">→ 箭头注释</span> 或 <span style="background:#2d4a6e; padding:2px 8px; border-radius:20px;">// 说明</span> ，一眼看懂每个参数的作用。</p>
+        </div>
+        <div class="theme-switch">
+            <span>🌓 日夜模式</span>
+            <label class="switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
     </div>
     <div class="config-body">
         <div class="code-block">
             <pre>{
   <span class="json-key">"log"</span>: {
-    <span class="json-key">"level"</span>: <span class="json-string">"fatal"</span>,      <span style="color:#90e0ff;">→ 日志级别: fatal = 只记录致命错误，日常不刷屏，节省性能</span>
-    <span class="json-key">"timestamp"</span>: <span class="json-boolean">true</span>        <span style="color:#90e0ff;">→ 开启时间戳，每条日志都带时间，方便排查故障</span>
-  },                                <span style="color:#90e0ff;">// 📋 log 模块: 控制运行日志的详细程度</span>
+    <span class="json-key">"level"</span>: <span class="json-string">"fatal"</span>,      <span class="comment-line">→ 日志级别: fatal = 只记录致命错误，日常不刷屏，节省性能</span>
+    <span class="json-key">"timestamp"</span>: <span class="json-boolean">true</span>        <span class="comment-line">→ 开启时间戳，每条日志都带时间，方便排查故障</span>
+  },                                <span class="comment-line">// 📋 log 模块: 控制运行日志的详细程度</span>
 
   <span class="json-key">"ntp"</span>: {
-    <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,          <span style="color:#90e0ff;">→ 启用网络时间同步 (保证证书验证准确)</span>
-    <span class="json-key">"server"</span>: <span class="json-string">"ntp.aliyun.com"</span>,   <span style="color:#90e0ff;">→ 阿里云NTP服务器，国内用户快速稳定</span>
-    <span class="json-key">"server_port"</span>: <span class="json-number">123</span>,        <span style="color:#90e0ff;">→ NTP 标准端口</span>
-    <span class="json-key">"interval"</span>: <span class="json-string">"30m"</span>           <span style="color:#90e0ff;">→ 每30分钟自动校准一次时间</span>
-  },                                <span style="color:#90e0ff;">// 🕒 NTP 保证系统时间精准，避免TLS握手失败</span>
+    <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,          <span class="comment-line">→ 启用网络时间同步 (保证证书验证准确)</span>
+    <span class="json-key">"server"</span>: <span class="json-string">"ntp.aliyun.com"</span>,   <span class="comment-line">→ 阿里云NTP服务器，国内用户快速稳定</span>
+    <span class="json-key">"server_port"</span>: <span class="json-number">123</span>,        <span class="comment-line">→ NTP 标准端口</span>
+    <span class="json-key">"interval"</span>: <span class="json-string">"30m"</span>           <span class="comment-line">→ 每30分钟自动校准一次时间</span>
+  },                                <span class="comment-line">// 🕒 NTP 保证系统时间精准，避免TLS握手失败</span>
 
   <span class="json-key">"dns"</span>: {
     <span class="json-key">"servers"</span>: [
       {
-        <span class="json-key">"tag"</span>: <span class="json-string">"local"</span>,           <span style="color:#90e0ff;">→ 本地DNS (从系统/本机获取)</span>
-        <span class="json-key">"type"</span>: <span class="json-string">"local"</span>            <span style="color:#90e0ff;">→ 类型: 使用系统默认DNS</span>
+        <span class="json-key">"tag"</span>: <span class="json-string">"local"</span>,           <span class="comment-line">→ 本地DNS (从系统/本机获取)</span>
+        <span class="json-key">"type"</span>: <span class="json-string">"local"</span>            <span class="comment-line">→ 类型: 使用系统默认DNS</span>
       },
       {
-        <span class="json-key">"tag"</span>: <span class="json-string">"hosts"</span>,           <span style="color:#90e0ff;">→ 本地Hosts解析器，内置常用域名映射</span>
+        <span class="json-key">"tag"</span>: <span class="json-string">"hosts"</span>,           <span class="comment-line">→ 本地Hosts解析器，内置常用域名映射</span>
         <span class="json-key">"type"</span>: <span class="json-string">"hosts"</span>,
-        <span class="json-key">"predefined"</span>: {               <span style="color:#90e0ff;">→ 预定义域名→IP，避免DNS服务器域名被污染</span>
+        <span class="json-key">"predefined"</span>: {               <span class="comment-line">→ 预定义域名→IP，避免DNS服务器域名被污染</span>
           <span class="json-string">"dns.alidns.com"</span>: [<span class="json-string">"223.5.5.5"</span>, <span class="json-string">"223.6.6.6"</span>],
           <span class="json-string">"dns.google"</span>: [<span class="json-string">"8.8.8.8"</span>, <span class="json-string">"8.8.4.4"</span>],
           <span class="json-string">"cloudflare-dns.com"</span>: [<span class="json-string">"104.16.248.249"</span>, <span class="json-string">"104.16.249.249"</span>]
-          <span style="color:#90e0ff;">// ... 更多hosts保证国外DNS服务器直达</span>
+          <span class="comment-line">// ... 更多hosts保证国外DNS服务器直达</span>
         }
       },
       {
-        <span class="json-key">"tag"</span>: <span class="json-string">"aldns"</span>,            <span style="color:#90e0ff;">→ 阿里DoH (DNS over HTTPS) 国内专用</span>
+        <span class="json-key">"tag"</span>: <span class="json-string">"aldns"</span>,            <span class="comment-line">→ 阿里DoH (DNS over HTTPS) 国内专用</span>
         <span class="json-key">"type"</span>: <span class="json-string">"https"</span>,
         <span class="json-key">"server"</span>: <span class="json-string">"dns.alidns.com"</span>,
-        <span class="json-key">"domain_resolver"</span>: <span class="json-string">"hosts"</span>   <span style="color:#90e0ff;">→ 用hosts解析 dns.alidns.com 域名，防止劫持</span>
+        <span class="json-key">"domain_resolver"</span>: <span class="json-string">"hosts"</span>   <span class="comment-line">→ 用hosts解析 dns.alidns.com 域名，防止劫持</span>
       },
       {
-        <span class="json-key">"tag"</span>: <span class="json-string">"ggdns"</span>,            <span style="color:#90e0ff;">→ 谷歌DoH，用于境外域名解析</span>
+        <span class="json-key">"tag"</span>: <span class="json-string">"ggdns"</span>,            <span class="comment-line">→ 谷歌DoH，用于境外域名解析</span>
         <span class="json-key">"type"</span>: <span class="json-string">"https"</span>,
         <span class="json-key">"server"</span>: <span class="json-string">"dns.google"</span>,
         <span class="json-key">"domain_resolver"</span>: <span class="json-string">"hosts"</span>,
-        <span class="json-key">"detour"</span>: <span class="json-string">"proxy"</span>          <span style="color:#90e0ff;">→ 走代理节点查询谷歌DoH，避免DNS污染</span>
+        <span class="json-key">"detour"</span>: <span class="json-string">"proxy"</span>          <span class="comment-line">→ 走代理节点查询谷歌DoH，避免DNS污染</span>
       },
       {
-        <span class="json-key">"tag"</span>: <span class="json-string">"fakeip"</span>,           <span style="color:#90e0ff;">→ 虚拟IP池，为境外域名分配内网IP (198.18.0.0/16)</span>
+        <span class="json-key">"tag"</span>: <span class="json-string">"fakeip"</span>,           <span class="comment-line">→ 虚拟IP池，为境外域名分配内网IP (198.18.0.0/16)</span>
         <span class="json-key">"type"</span>: <span class="json-string">"fakeip"</span>,
         <span class="json-key">"inet4_range"</span>: <span class="json-string">"198.18.0.0/16"</span>
       }
     ],
     <span class="json-key">"rules"</span>: [
-      { <span class="json-key">"clash_mode"</span>: <span class="json-string">"direct"</span>, <span class="json-key">"server"</span>: <span class="json-string">"local"</span> },      <span style="color:#90e0ff;">→ Clash模式为direct时使用本地DNS</span>
-      { <span class="json-key">"clash_mode"</span>: <span class="json-string">"global"</span>, <span class="json-key">"server"</span>: <span class="json-string">"fakeip"</span> },       <span style="color:#90e0ff;">→ 全局代理模式用fakeip，所有域名拿虚拟IP</span>
-      { <span class="json-key">"domain_suffix"</span>: [<span class="json-string">".local"</span>, <span class="json-string">".lan"</span>, <span class="json-string">"miwifi.com"</span>], <span class="json-key">"server"</span>: <span class="json-string">"local"</span> }, <span style="color:#90e0ff;">→ 内网域名走本地DNS</span>
-      { <span class="json-key">"query_type"</span>: [<span class="json-string">"SVCB"</span>, <span class="json-string">"HTTPS"</span>], <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> },   <span style="color:#90e0ff;">→ 拒绝新型DNS记录查询，减少无谓请求</span>
-      { <span class="json-key">"rule_set"</span>: [<span class="json-string">"geosite_adguard"</span>, <span class="json-string">"geosite-category-ads-all"</span>], <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> }, <span style="color:#90e0ff;">→ 广告域名直接拒绝解析</span>
-      { <span class="json-key">"domain_suffix"</span>: [<span class="json-string">"market.xiaomi.com"</span>], <span class="json-key">"server"</span>: <span class="json-string">"aldns"</span> },   <span style="color:#90e0ff;">→ 小米市场走阿里DNS，国内直连更快</span>
-      { <span class="json-key">"rule_set"</span>: [<span class="json-string">"cn_domain"</span>, <span class="json-string">"apple_domain"</span>, <span class="json-string">"bilibili_domain"</span>], <span class="json-key">"server"</span>: <span class="json-string">"aldns"</span> }, <span style="color:#90e0ff;">→ 国内/苹果/B站域名用阿里DNS</span>
-      { <span class="json-key">"rule_set"</span>: [<span class="json-string">"google_domain"</span>, <span class="json-string">"netflix_domain"</span>, <span class="json-string">"youtube_domain"</span>, <span class="json-string">"telegram_domain"</span>, <span class="json-string">"openai_domain"</span>], <span class="json-key">"server"</span>: <span class="json-string">"fakeip"</span> }, <span style="color:#90e0ff;">→ 外网域名交给fakeip，触发代理路由</span>
-      { <span class="json-key">"query_type"</span>: [<span class="json-string">"PTR"</span>], <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> }                <span style="color:#90e0ff;">→ 拒绝PTR反向解析请求，提升隐私</span>
+      { <span class="json-key">"clash_mode"</span>: <span class="json-string">"direct"</span>, <span class="json-key">"server"</span>: <span class="json-string">"local"</span> },      <span class="comment-line">→ Clash模式为direct时使用本地DNS</span>
+      { <span class="json-key">"clash_mode"</span>: <span class="json-string">"global"</span>, <span class="json-key">"server"</span>: <span class="json-string">"fakeip"</span> },       <span class="comment-line">→ 全局代理模式用fakeip，所有域名拿虚拟IP</span>
+      { <span class="json-key">"domain_suffix"</span>: [<span class="json-string">".local"</span>, <span class="json-string">".lan"</span>, <span class="json-string">"miwifi.com"</span>], <span class="json-key">"server"</span>: <span class="json-string">"local"</span> }, <span class="comment-line">→ 内网域名走本地DNS</span>
+      { <span class="json-key">"query_type"</span>: [<span class="json-string">"SVCB"</span>, <span class="json-string">"HTTPS"</span>], <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> },   <span class="comment-line">→ 拒绝新型DNS记录查询，减少无谓请求</span>
+      { <span class="json-key">"rule_set"</span>: [<span class="json-string">"geosite_adguard"</span>, <span class="json-string">"geosite-category-ads-all"</span>], <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> }, <span class="comment-line">→ 广告域名直接拒绝解析</span>
+      { <span class="json-key">"domain_suffix"</span>: [<span class="json-string">"market.xiaomi.com"</span>], <span class="json-key">"server"</span>: <span class="json-string">"aldns"</span> },   <span class="comment-line">→ 小米市场走阿里DNS，国内直连更快</span>
+      { <span class="json-key">"rule_set"</span>: [<span class="json-string">"cn_domain"</span>, <span class="json-string">"apple_domain"</span>, <span class="json-string">"bilibili_domain"</span>], <span class="json-key">"server"</span>: <span class="json-string">"aldns"</span> }, <span class="comment-line">→ 国内/苹果/B站域名用阿里DNS</span>
+      { <span class="json-key">"rule_set"</span>: [<span class="json-string">"google_domain"</span>, <span class="json-string">"netflix_domain"</span>, <span class="json-string">"youtube_domain"</span>, <span class="json-string">"telegram_domain"</span>, <span class="json-string">"openai_domain"</span>], <span class="json-key">"server"</span>: <span class="json-string">"fakeip"</span> }, <span class="comment-line">→ 外网域名交给fakeip，触发代理路由</span>
+      { <span class="json-key">"query_type"</span>: [<span class="json-string">"PTR"</span>], <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> }                <span class="comment-line">→ 拒绝PTR反向解析请求，提升隐私</span>
     ],
-    <span class="json-key">"final"</span>: <span class="json-string">"ggdns"</span>,                    <span style="color:#90e0ff;">→ 最后兜底DNS: 谷歌DoH，未匹配域名走这个</span>
-    <span class="json-key">"strategy"</span>: <span class="json-string">"ipv4_only"</span>,             <span style="color:#90e0ff;">→ 只查询IPv4，避免IPv6干扰分流</span>
-    <span class="json-key">"reverse_mapping"</span>: <span class="json-boolean">true</span>,          <span style="color:#90e0ff;">→ 反向映射，从IP反查域名时记录，方便日志</span>
-    <span class="json-key">"independent_cache"</span>: <span class="json-boolean">true</span>,        <span style="color:#90e0ff;">→ 独立DNS缓存，不依赖系统</span>
-    <span class="json-key">"cache_capacity"</span>: <span class="json-number">8000</span>,             <span style="color:#90e0ff;">→ 缓存最多8000条DNS记录</span>
-    <span class="json-key">"client_subnet"</span>: <span class="json-string">"223.5.5.5"</span>          <span style="color:#90e0ff;">→ 告诉权威DNS，客户端位于国内，CDN调度更准</span>
-  },                                  <span style="color:#90e0ff;">// 🌐 DNS模块核心：防泄漏+广告拦截+国内外分流</span>
+    <span class="json-key">"final"</span>: <span class="json-string">"ggdns"</span>,                    <span class="comment-line">→ 最后兜底DNS: 谷歌DoH，未匹配域名走这个</span>
+    <span class="json-key">"strategy"</span>: <span class="json-string">"ipv4_only"</span>,             <span class="comment-line">→ 只查询IPv4，避免IPv6干扰分流</span>
+    <span class="json-key">"reverse_mapping"</span>: <span class="json-boolean">true</span>,          <span class="comment-line">→ 反向映射，从IP反查域名时记录，方便日志</span>
+    <span class="json-key">"independent_cache"</span>: <span class="json-boolean">true</span>,        <span class="comment-line">→ 独立DNS缓存，不依赖系统</span>
+    <span class="json-key">"cache_capacity"</span>: <span class="json-number">8000</span>,             <span class="comment-line">→ 缓存最多8000条DNS记录</span>
+    <span class="json-key">"client_subnet"</span>: <span class="json-string">"223.5.5.5"</span>          <span class="comment-line">→ 告诉权威DNS，客户端位于国内，CDN调度更准</span>
+  },                                  <span class="comment-line">// 🌐 DNS模块核心：防泄漏+广告拦截+国内外分流</span>
 
   <span class="json-key">"inbounds"</span>: [
     {
-      <span class="json-key">"type"</span>: <span class="json-string">"tun"</span>,                <span style="color:#90e0ff;">→ TUN虚拟网卡模式，接管系统所有流量</span>
+      <span class="json-key">"type"</span>: <span class="json-string">"tun"</span>,                <span class="comment-line">→ TUN虚拟网卡模式，接管系统所有流量</span>
       <span class="json-key">"tag"</span>: <span class="json-string">"tun-in"</span>,
-      <span class="json-key">"address"</span>: [<span class="json-string">"10.8.0.1/24"</span>],   <span style="color:#90e0ff;">→ 分配给TUN的虚拟IP地址</span>
-      <span class="json-key">"mtu"</span>: <span class="json-number">1500</span>,               <span style="color:#90e0ff;">→ 最大传输单元，标准以太网值</span>
-      <span class="json-key">"stack"</span>: <span class="json-string">"mixed"</span>,          <span style="color:#90e0ff;">→ 混合栈，同时支持TCP和UDP，游戏/语音流畅</span>
-      <span class="json-key">"auto_route"</span>: <span class="json-boolean">true</span>        <span style="color:#90e0ff;">→ 自动添加路由，所有流量进入TUN处理</span>
+      <span class="json-key">"address"</span>: [<span class="json-string">"10.8.0.1/24"</span>],   <span class="comment-line">→ 分配给TUN的虚拟IP地址</span>
+      <span class="json-key">"mtu"</span>: <span class="json-number">1500</span>,               <span class="comment-line">→ 最大传输单元，标准以太网值</span>
+      <span class="json-key">"stack"</span>: <span class="json-string">"mixed"</span>,          <span class="comment-line">→ 混合栈，同时支持TCP和UDP，游戏/语音流畅</span>
+      <span class="json-key">"auto_route"</span>: <span class="json-boolean">true</span>        <span class="comment-line">→ 自动添加路由，所有流量进入TUN处理</span>
     },
     {
-      <span class="json-key">"type"</span>: <span class="json-string">"mixed"</span>,            <span style="color:#90e0ff;">→ 混合入站 (HTTP/SOCKS5)</span>
+      <span class="json-key">"type"</span>: <span class="json-string">"mixed"</span>,            <span class="comment-line">→ 混合入站 (HTTP/SOCKS5)</span>
       <span class="json-key">"tag"</span>: <span class="json-string">"mixed-in"</span>,
-      <span class="json-key">"listen"</span>: <span class="json-string">"127.0.0.1"</span>,       <span style="color:#90e0ff;">→ 仅本机监听，安全</span>
-      <span class="json-key">"listen_port"</span>: <span class="json-number">7890</span>         <span style="color:#90e0ff;">→ 代理端口，可给浏览器/软件单独使用</span>
+      <span class="json-key">"listen"</span>: <span class="json-string">"127.0.0.1"</span>,       <span class="comment-line">→ 仅本机监听，安全</span>
+      <span class="json-key">"listen_port"</span>: <span class="json-number">7890</span>         <span class="comment-line">→ 代理端口，可给浏览器/软件单独使用</span>
     }
-  ],                                  <span style="color:#90e0ff;">// 🚪 入站: TUN接管全局 + 7890端口供手动代理</span>
+  ],                                  <span class="comment-line">// 🚪 入站: TUN接管全局 + 7890端口供手动代理</span>
 
   <span class="json-key">"outbounds"</span>: [
-    { <span class="json-key">"type"</span>: <span class="json-string">"direct"</span>, <span class="json-key">"tag"</span>: <span class="json-string">"direct"</span> },          <span style="color:#90e0ff;">→ 直连出站 (不经过代理)</span>
+    { <span class="json-key">"type"</span>: <span class="json-string">"direct"</span>, <span class="json-key">"tag"</span>: <span class="json-string">"direct"</span> },          <span class="comment-line">→ 直连出站 (不经过代理)</span>
     {
-      <span class="json-key">"type"</span>: <span class="json-string">"selector"</span>,         <span style="color:#90e0ff;">→ 选择器，用户可手动切换节点组</span>
+      <span class="json-key">"type"</span>: <span class="json-string">"selector"</span>,         <span class="comment-line">→ 选择器，用户可手动切换节点组</span>
       <span class="json-key">"tag"</span>: <span class="json-string">"proxy"</span>,
       <span class="json-key">"outbounds"</span>: [<span class="json-string">"auto"</span>, <span class="json-string">"🚀 CF-优选-Visa"</span>, <span class="json-string">"direct"</span>],
-      <span class="json-key">"default"</span>: <span class="json-string">"auto"</span>            <span style="color:#90e0ff;">→ 默认使用 auto 组 (自动测速选最快节点)</span>
+      <span class="json-key">"default"</span>: <span class="json-string">"auto"</span>            <span class="comment-line">→ 默认使用 auto 组 (自动测速选最快节点)</span>
     },
     {
-      <span class="json-key">"type"</span>: <span class="json-string">"urltest"</span>,          <span style="color:#90e0ff;">→ 自动测速组</span>
+      <span class="json-key">"type"</span>: <span class="json-string">"urltest"</span>,          <span class="comment-line">→ 自动测速组</span>
       <span class="json-key">"tag"</span>: <span class="json-string">"auto"</span>,
       <span class="json-key">"outbounds"</span>: [<span class="json-string">"🚀 CF-优选-Visa"</span>],
-      <span class="json-key">"url"</span>: <span class="json-string">"https://www.gstatic.com/generate_204"</span>,  <span style="color:#90e0ff;">→ 测速地址</span>
-      <span class="json-key">"interval"</span>: <span class="json-string">"3m"</span>,          <span style="color:#90e0ff;">→ 每3分钟测速一次</span>
-      <span class="json-key">"tolerance"</span>: <span class="json-number">150</span>,         <span style="color:#90e0ff;">→ 延迟差在150ms内不切换，避免抖动</span>
-      <span class="json-key">"idle_timeout"</span>: <span class="json-string">"30m"</span>       <span style="color:#90e0ff;">→ 空闲30分钟后停止测速</span>
+      <span class="json-key">"url"</span>: <span class="json-string">"https://www.gstatic.com/generate_204"</span>,  <span class="comment-line">→ 测速地址</span>
+      <span class="json-key">"interval"</span>: <span class="json-string">"3m"</span>,          <span class="comment-line">→ 每3分钟测速一次</span>
+      <span class="json-key">"tolerance"</span>: <span class="json-number">150</span>,         <span class="comment-line">→ 延迟差在150ms内不切换，避免抖动</span>
+      <span class="json-key">"idle_timeout"</span>: <span class="json-string">"30m"</span>       <span class="comment-line">→ 空闲30分钟后停止测速</span>
     },
-    <span style="color:#90e0ff;">// 以下是针对不同服务的独立选择器，方便精细控制 (谷歌/苹果/电报/奈飞/油管等)</span>
+    <span class="comment-line">// 以下是针对不同服务的独立选择器，方便精细控制 (谷歌/苹果/电报/奈飞/油管等)</span>
     { <span class="json-key">"tag"</span>: <span class="json-string">"google"</span>, <span class="json-key">"outbounds"</span>: [<span class="json-string">"proxy"</span>, <span class="json-string">"auto"</span>, <span class="json-string">"direct"</span>], <span class="json-key">"default"</span>: <span class="json-string">"proxy"</span> },
-    { <span class="json-key">"tag"</span>: <span class="json-string">"apple"</span>, <span class="json-key">"outbounds"</span>: [<span class="json-string">"direct"</span>, <span class="json-string">"proxy"</span>], <span class="json-key">"default"</span>: <span class="json-string">"direct"</span> },    <span style="color:#90e0ff;">→ 苹果服务默认直连 (国内CDN快)</span>
+    { <span class="json-key">"tag"</span>: <span class="json-string">"apple"</span>, <span class="json-key">"outbounds"</span>: [<span class="json-string">"direct"</span>, <span class="json-string">"proxy"</span>], <span class="json-key">"default"</span>: <span class="json-string">"direct"</span> },    <span class="comment-line">→ 苹果服务默认直连 (国内CDN快)</span>
     { <span class="json-key">"tag"</span>: <span class="json-string">"telegram"</span>, <span class="json-key">"outbounds"</span>: [<span class="json-string">"proxy"</span>, <span class="json-string">"auto"</span>], <span class="json-key">"default"</span>: <span class="json-string">"proxy"</span> },
     { <span class="json-key">"tag"</span>: <span class="json-string">"bilibili"</span>, <span class="json-key">"outbounds"</span>: [<span class="json-string">"direct"</span>, <span class="json-string">"proxy"</span>], <span class="json-key">"default"</span>: <span class="json-string">"direct"</span> },
     { <span class="json-key">"tag"</span>: <span class="json-string">"netflix"</span>, <span class="json-key">"outbounds"</span>: [<span class="json-string">"proxy"</span>, <span class="json-string">"auto"</span>], <span class="json-key">"default"</span>: <span class="json-string">"proxy"</span> },
@@ -279,19 +402,19 @@
     { <span class="json-key">"tag"</span>: <span class="json-string">"ai"</span>, <span class="json-key">"outbounds"</span>: [<span class="json-string">"proxy"</span>, <span class="json-string">"auto"</span>], <span class="json-key">"default"</span>: <span class="json-string">"proxy"</span> },
     { <span class="json-key">"tag"</span>: <span class="json-string">"GLOBAL"</span>, <span class="json-key">"outbounds"</span>: [<span class="json-string">"proxy"</span>, <span class="json-string">"direct"</span>, <span class="json-string">"auto"</span>], <span class="json-key">"default"</span>: <span class="json-string">"proxy"</span> },
     { <span class="json-key">"tag"</span>: <span class="json-string">"cn"</span>, <span class="json-key">"outbounds"</span>: [<span class="json-string">"direct"</span>, <span class="json-string">"proxy"</span>], <span class="json-key">"default"</span>: <span class="json-string">"direct"</span> }
-  ],                                  <span style="color:#90e0ff;">// ✈️ 出站: 定义代理池、自动优选、各服务独立策略</span>
+  ],                                  <span class="comment-line">// ✈️ 出站: 定义代理池、自动优选、各服务独立策略</span>
 
   <span class="json-key">"route"</span>: {
     <span class="json-key">"rules"</span>: [
-      { <span class="json-key">"action"</span>: <span class="json-string">"sniff"</span> },                         <span style="color:#90e0ff;">→ 流量嗅探，自动识别真实域名</span>
-      { <span class="json-key">"type"</span>: <span class="json-string">"logical"</span>, <span class="json-key">"mode"</span>: <span class="json-string">"or"</span>, <span class="json-key">"rules"</span>: [{<span class="json-key">"port"</span>: <span class="json-number">53</span>}, {<span class="json-key">"protocol"</span>: <span class="json-string">"dns"</span>}], <span class="json-key">"action"</span>: <span class="json-string">"hijack-dns"</span> }, <span style="color:#90e0ff;">→ 劫持DNS流量到内置DNS模块</span>
-      { <span class="json-key">"protocol"</span>: <span class="json-string">"quic"</span>, <span class="json-key">"port"</span>: <span class="json-number">443</span>, <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> },   <span style="color:#90e0ff;">→ 拒绝QUIC协议，减少代理故障</span>
-      { <span class="json-key">"domain_suffix"</span>: [<span class="json-string">"miwifi.com"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"direct"</span> },      <span style="color:#90e0ff;">→ 小米路由器域名直连</span>
-      { <span class="json-key">"clash_mode"</span>: <span class="json-string">"direct"</span>, <span class="json-key">"outbound"</span>: <span class="json-string">"direct"</span> },           <span style="color:#90e0ff;">→ 当Clash模式为direct时全部直连</span>
-      { <span class="json-key">"clash_mode"</span>: <span class="json-string">"global"</span>, <span class="json-key">"outbound"</span>: <span class="json-string">"GLOBAL"</span> },            <span style="color:#90e0ff;">→ 全局模式走GLOBAL选择器</span>
-      { <span class="json-key">"ip_is_private"</span>: <span class="json-boolean">true</span>, <span class="json-key">"outbound"</span>: <span class="json-string">"direct"</span> },           <span style="color:#90e0ff;">→ 内网IP直连</span>
-      { <span class="json-key">"ip_cidr"</span>: [<span class="json-string">"198.18.0.0/16"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"proxy"</span> },          <span style="color:#90e0ff;">→ fakeip段走代理</span>
-      { <span class="json-key">"rule_set"</span>: [<span class="json-string">"geosite_adguard"</span>, <span class="json-string">"geosite-category-ads-all"</span>], <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> }, <span style="color:#90e0ff;">→ 广告域名直接拒绝连接</span>
+      { <span class="json-key">"action"</span>: <span class="json-string">"sniff"</span> },                         <span class="comment-line">→ 流量嗅探，自动识别真实域名</span>
+      { <span class="json-key">"type"</span>: <span class="json-string">"logical"</span>, <span class="json-key">"mode"</span>: <span class="json-string">"or"</span>, <span class="json-key">"rules"</span>: [{<span class="json-key">"port"</span>: <span class="json-number">53</span>}, {<span class="json-key">"protocol"</span>: <span class="json-string">"dns"</span>}], <span class="json-key">"action"</span>: <span class="json-string">"hijack-dns"</span> }, <span class="comment-line">→ 劫持DNS流量到内置DNS模块</span>
+      { <span class="json-key">"protocol"</span>: <span class="json-string">"quic"</span>, <span class="json-key">"port"</span>: <span class="json-number">443</span>, <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> },   <span class="comment-line">→ 拒绝QUIC协议，减少代理故障</span>
+      { <span class="json-key">"domain_suffix"</span>: [<span class="json-string">"miwifi.com"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"direct"</span> },      <span class="comment-line">→ 小米路由器域名直连</span>
+      { <span class="json-key">"clash_mode"</span>: <span class="json-string">"direct"</span>, <span class="json-key">"outbound"</span>: <span class="json-string">"direct"</span> },           <span class="comment-line">→ 当Clash模式为direct时全部直连</span>
+      { <span class="json-key">"clash_mode"</span>: <span class="json-string">"global"</span>, <span class="json-key">"outbound"</span>: <span class="json-string">"GLOBAL"</span> },            <span class="comment-line">→ 全局模式走GLOBAL选择器</span>
+      { <span class="json-key">"ip_is_private"</span>: <span class="json-boolean">true</span>, <span class="json-key">"outbound"</span>: <span class="json-string">"direct"</span> },           <span class="comment-line">→ 内网IP直连</span>
+      { <span class="json-key">"ip_cidr"</span>: [<span class="json-string">"198.18.0.0/16"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"proxy"</span> },          <span class="comment-line">→ fakeip段走代理</span>
+      { <span class="json-key">"rule_set"</span>: [<span class="json-string">"geosite_adguard"</span>, <span class="json-string">"geosite-category-ads-all"</span>], <span class="json-key">"action"</span>: <span class="json-string">"reject"</span> }, <span class="comment-line">→ 广告域名直接拒绝连接</span>
       { <span class="json-key">"rule_set"</span>: [<span class="json-string">"telegram_ip"</span>, <span class="json-string">"telegram_domain"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"telegram"</span> },
       { <span class="json-key">"rule_set"</span>: <span class="json-string">"bilibili_domain"</span>, <span class="json-key">"outbound"</span>: <span class="json-string">"bilibili"</span> },
       { <span class="json-key">"rule_set"</span>: [<span class="json-string">"apple_ip"</span>, <span class="json-string">"apple_domain"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"apple"</span> },
@@ -301,35 +424,35 @@
       { <span class="json-key">"rule_set"</span>: <span class="json-string">"openai_domain"</span>, <span class="json-key">"outbound"</span>: <span class="json-string">"openai"</span> },
       { <span class="json-key">"rule_set"</span>: <span class="json-string">"ai"</span>, <span class="json-key">"outbound"</span>: <span class="json-string">"ai"</span> },
       { <span class="json-key">"rule_set"</span>: [<span class="json-string">"cn_ip"</span>, <span class="json-string">"cn_domain"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"cn"</span> },
-      <span style="color:#90e0ff;">// Android App 包名分流 (精准识别应用)</span>
+      <span class="comment-line">// Android App 包名分流 (精准识别应用)</span>
       { <span class="json-key">"package_name"</span>: [<span class="json-string">"com.google.android.youtube"</span>, <span class="json-string">"app.revanced.android.youtube"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"youtube"</span> },
       { <span class="json-key">"package_name"</span>: [<span class="json-string">"org.telegram.messenger"</span>, <span class="json-string">"org.thunderdog.challegram"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"telegram"</span> },
       { <span class="json-key">"package_name"</span>: [<span class="json-string">"com.openai.chatgpt"</span>], <span class="json-key">"outbound"</span>: <span class="json-string">"ai"</span> }
     ],
-    <span class="json-key">"rule_set"</span>: [                       <span style="color:#90e0ff;">→ 外部规则集 (自动从网络下载，保持最新)</span>
+    <span class="json-key">"rule_set"</span>: [                       <span class="comment-line">→ 外部规则集 (自动从网络下载，保持最新)</span>
       { <span class="json-key">"tag"</span>: <span class="json-string">"geosite-category-ads-all"</span>, <span class="json-key">"url"</span>: <span class="json-string">"https://ghfast.top/.../geosite-category-ads-all.srs"</span>, <span class="json-key">"update_interval"</span>: <span class="json-string">"48h"</span> },
       { <span class="json-key">"tag"</span>: <span class="json-string">"cn_domain"</span>, <span class="json-key">"url"</span>: <span class="json-string">"https://ghfast.top/.../geosite/cn.srs"</span>, <span class="json-key">"update_interval"</span>: <span class="json-string">"48h"</span> },
-      <span style="color:#90e0ff;">// ... 其他规则集 (google, netflix, telegram, youtube, ai 等) 均每48h更新</span>
+      <span class="comment-line">// ... 其他规则集 (google, netflix, telegram, youtube, ai 等) 均每48h更新</span>
     ],
-    <span class="json-key">"final"</span>: <span class="json-string">"proxy"</span>,                    <span style="color:#90e0ff;">→ 最终兜底: 未匹配任何规则的流量走代理</span>
-    <span class="json-key">"auto_detect_interface"</span>: <span class="json-boolean">true</span>,   <span style="color:#90e0ff;">→ 自动检测出口网卡</span>
-    <span class="json-key">"default_domain_resolver"</span>: <span class="json-string">"aldns"</span>   <span style="color:#90e0ff;">→ 默认域名解析器 (阿里DoH)</span>
-  },                                  <span style="color:#90e0ff;">// 🗺️ 路由核心: 基于域名/IP/包名的智能分流引擎</span>
+    <span class="json-key">"final"</span>: <span class="json-string">"proxy"</span>,                    <span class="comment-line">→ 最终兜底: 未匹配任何规则的流量走代理</span>
+    <span class="json-key">"auto_detect_interface"</span>: <span class="json-boolean">true</span>,   <span class="comment-line">→ 自动检测出口网卡</span>
+    <span class="json-key">"default_domain_resolver"</span>: <span class="json-string">"aldns"</span>   <span class="comment-line">→ 默认域名解析器 (阿里DoH)</span>
+  },                                  <span class="comment-line">// 🗺️ 路由核心: 基于域名/IP/包名的智能分流引擎</span>
 
   <span class="json-key">"experimental"</span>: {
     <span class="json-key">"clash_api"</span>: {
-      <span class="json-key">"external_controller"</span>: <span class="json-string">"127.0.0.1:9090"</span>,   <span style="color:#90e0ff;">→ Clash API地址，可配合Web面板</span>
-      <span class="json-key">"external_ui"</span>: <span class="json-string">"ui"</span>,                         <span style="color:#90e0ff;">→ UI文件夹名称</span>
-      <span class="json-key">"secret"</span>: <span class="json-string">"kSDuU2WHyf72taGMdDS0ib6klwFVF5QIM4HGhS5f4Jw="</span>,  <span style="color:#90e0ff;">→ API访问密码 (保护安全)</span>
-      <span class="json-key">"default_mode"</span>: <span class="json-string">"rule"</span>                       <span style="color:#90e0ff;">→ 默认运行模式: 规则分流</span>
+      <span class="json-key">"external_controller"</span>: <span class="json-string">"127.0.0.1:9090"</span>,   <span class="comment-line">→ Clash API地址，可配合Web面板</span>
+      <span class="json-key">"external_ui"</span>: <span class="json-string">"ui"</span>,                         <span class="comment-line">→ UI文件夹名称</span>
+      <span class="json-key">"secret"</span>: <span class="json-string">"kSDuU2WHyf72taGMdDS0ib6klwFVF5QIM4HGhS5f4Jw="</span>,  <span class="comment-line">→ API访问密码 (保护安全)</span>
+      <span class="json-key">"default_mode"</span>: <span class="json-string">"rule"</span>                       <span class="comment-line">→ 默认运行模式: 规则分流</span>
     },
     <span class="json-key">"cache_file"</span>: {
-      <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,                    <span style="color:#90e0ff;">→ 启用缓存文件</span>
-      <span class="json-key">"path"</span>: <span class="json-string">"cache.db"</span>,                 <span style="color:#90e0ff;">→ 缓存数据库路径</span>
-      <span class="json-key">"cache_id"</span>: <span class="json-string">"singbox"</span>,               <span style="color:#90e0ff;">→ 缓存标识</span>
-      <span class="json-key">"store_fakeip"</span>: <span class="json-boolean">true</span>              <span style="color:#90e0ff;">→ 持久化保存fakeip映射，重启后连接不断</span>
+      <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,                    <span class="comment-line">→ 启用缓存文件</span>
+      <span class="json-key">"path"</span>: <span class="json-string">"cache.db"</span>,                 <span class="comment-line">→ 缓存数据库路径</span>
+      <span class="json-key">"cache_id"</span>: <span class="json-string">"singbox"</span>,               <span class="comment-line">→ 缓存标识</span>
+      <span class="json-key">"store_fakeip"</span>: <span class="json-boolean">true</span>              <span class="comment-line">→ 持久化保存fakeip映射，重启后连接不断</span>
     }
-  }                                     <span style="color:#90e0ff;">// 🧪 实验功能: Web管理界面 + 持久化缓存</span>
+  }                                     <span class="comment-line">// 🧪 实验功能: Web管理界面 + 持久化缓存</span>
 }</pre>
         </div>
         <div class="note-tip">
@@ -341,9 +464,35 @@
         </div>
         <hr>
         <div class="footer-note">
-            📌 配置文件逐行注释 — 所有箭头 (→) 和双斜杠 (//) 均为解释说明，方便快速上手 Sing-Box。
+            📌 配置文件逐行注释 — 所有箭头 (→) 和双斜杠 (//) 均为解释说明，方便快速上手 Sing-Box。<br>
+            🌓 点击右上角开关可切换明亮/暗色主题，所有背景、代码、注释、卡片、边框均会同步变化，保护眼睛。
         </div>
     </div>
 </div>
+
+<script>
+    (function() {
+        const toggle = document.getElementById('theme-toggle');
+        if (!toggle) return;
+        // 读取本地存储
+        const stored = localStorage.getItem('theme');
+        if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.body.classList.add('dark');
+            toggle.checked = true;
+        } else {
+            document.body.classList.remove('dark');
+            toggle.checked = false;
+        }
+        toggle.addEventListener('change', function() {
+            if (toggle.checked) {
+                document.body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    })();
+</script>
 </body>
 </html>
