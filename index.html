@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>sing-box 全功能分流配置 逐行注释稳定版</title>
+    <title>sing-box 配置注释 · 1.13.9 完整版</title>
     <style>
-        /* 日夜模式全局变量 */
+        /* 日夜模式变量 */
         :root {
             --bg-body: #eef2f7;
             --bg-container: #ffffff;
@@ -21,17 +21,11 @@
             --comment-bg: #f1fdf5;
             --info-bg: #f8fafc;
             --info-text: #1e293b;
-            --border-light: #e2e8f0;
+            --border-light: #f0f4f8;
             --btn-bg: #e2e8f0;
             --btn-text: #1e293b;
             --btn-active-bg: #0a2b3c;
             --btn-active-text: #ffffff;
-            --copy-btn-bg: #2563eb;
-            --copy-btn-hover: #1d4ed8;
-            --scrollbar-thumb: #cbd5e1;
-            --scrollbar-track: #f1f5f9;
-            --inline-code-bg: #e0e7ff;
-            --inline-code-text: #1e40af;
         }
         @media (prefers-color-scheme: dark) {
             :root {
@@ -54,15 +48,9 @@
                 --btn-text: #e2e8f0;
                 --btn-active-bg: #3b82f6;
                 --btn-active-text: #ffffff;
-                --copy-btn-bg: #3b82f6;
-                --copy-btn-hover: #2563eb;
-                --scrollbar-thumb: #475569;
-                --scrollbar-track: #1e293b;
-                --inline-code-bg: #334155;
-                --inline-code-text: #bfdbfe;
             }
         }
-        /* 手动主题强制类 */
+        /* 手动主题类 */
         body.light {
             --bg-body: #eef2f7;
             --bg-container: #ffffff;
@@ -78,17 +66,11 @@
             --comment-bg: #f1fdf5;
             --info-bg: #f8fafc;
             --info-text: #1e293b;
-            --border-light: #e2e8f0;
+            --border-light: #f0f4f8;
             --btn-bg: #e2e8f0;
             --btn-text: #1e293b;
             --btn-active-bg: #0a2b3c;
             --btn-active-text: #ffffff;
-            --copy-btn-bg: #2563eb;
-            --copy-btn-hover: #1d4ed8;
-            --scrollbar-thumb: #cbd5e1;
-            --scrollbar-track: #f1f5f9;
-            --inline-code-bg: #e0e7ff;
-            --inline-code-text: #1e40af;
         }
         body.dark {
             --bg-body: #1a1e2a;
@@ -110,34 +92,23 @@
             --btn-text: #e2e8f0;
             --btn-active-bg: #3b82f6;
             --btn-active-text: #ffffff;
-            --copy-btn-bg: #3b82f6;
-            --copy-btn-hover: #2563eb;
-            --scrollbar-thumb: #475569;
-            --scrollbar-track: #1e293b;
-            --inline-code-bg: #334155;
-            --inline-code-text: #bfdbfe;
         }
-        /* 全局初始化 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
         body { 
             background: var(--bg-body); 
             font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', sans-serif; 
             padding: 1rem; 
             color: var(--info-text);
-            transition: background 0.2s ease, color 0.2s ease;
-            line-height: 1.5;
+            transition: background 0.2s, color 0.2s;
         }
-        /* 容器样式 */
         .container { 
-            max-width: 1800px; 
+            max-width: 1600px; 
             margin: 0 auto; 
             background: var(--bg-container); 
             border-radius: 16px; 
-            box-shadow: 0 10px 30px -8px rgba(0,0,0,0.12); 
+            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.1); 
             overflow: hidden; 
         }
-        /* 头部样式修复 */
         .header { 
             background: var(--header-bg); 
             color: var(--header-text); 
@@ -146,179 +117,95 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 1rem;
-            position: relative;
-            z-index: 20;
         }
-        .header-title h1 { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 600; line-height: 1.3; }
-        .header-title p { margin-top: 0.4rem; opacity: 0.9; font-size: 0.9rem; }
-        .header-tools { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+        .header h1 { font-size: 1.6rem; font-weight: 600; }
+        .header p { margin-top: 0.4rem; opacity: 0.9; font-size: 0.9rem; }
         .theme-switcher { display: flex; gap: 0.5rem; }
         .theme-btn {
             background: var(--btn-bg);
             color: var(--btn-text);
             border: none;
             border-radius: 20px;
-            padding: 0.4rem 0.9rem;
+            padding: 0.3rem 0.8rem;
             font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: 0.2s;
             font-weight: 500;
         }
         .theme-btn.active {
             background: var(--btn-active-bg);
             color: var(--btn-active-text);
         }
-        .copy-btn {
-            background: var(--copy-btn-bg);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0.4rem 1rem;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            font-weight: 500;
-        }
-        .copy-btn:hover { background: var(--copy-btn-hover); }
-        .copy-btn.success { background: #10b981; }
-        /* 表格容器修复 - 解决表头吸顶失效问题 */
-        .table-wrapper {
-            overflow-x: auto;
-            position: relative;
-            max-height: calc(100vh - 280px);
-            overflow-y: auto;
-        }
-        /* 表格核心样式修复 */
-        .config-table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-size: 0.8rem;
-            table-layout: fixed;
-        }
-        /* 表头吸顶修复 */
+        .config-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
         .config-table th { 
             text-align: left; 
             background: var(--th-bg); 
-            padding: 0.9rem 0.7rem; 
+            padding: 0.8rem 0.6rem; 
             font-weight: 600; 
             position: sticky; 
             top: 0; 
-            z-index: 10;
-            backdrop-filter: blur(6px); 
+            backdrop-filter: blur(4px); 
             border-bottom: 2px solid var(--th-border); 
             color: var(--info-text);
         }
-        /* 列宽固定修复 */
-        .config-table th:nth-child(1) { width: 60px; min-width: 60px; }
-        .config-table th:nth-child(2) { width: 50%; min-width: 400px; }
-        .config-table th:nth-child(3) { width: calc(50% - 60px); min-width: 350px; }
         .config-table td { 
-            padding: 0.7rem; 
+            padding: 0.5rem 0.6rem; 
             border-bottom: 1px solid var(--border-light); 
-            vertical-align: top;
-            line-height: 1.6;
+            vertical-align: top; 
         }
-        /* 行号列修复 */
         .line-num { 
+            width: 50px; 
             text-align: right; 
             color: var(--line-num-text); 
             background: var(--line-num-bg); 
             user-select: none; 
-            font-family: monospace;
         }
-        /* 代码单元格修复 - 解决缩进错乱问题 */
         .code-cell { 
             font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; 
-            white-space: pre;
-            word-break: break-all;
-            overflow-wrap: break-word;
+            white-space: pre-wrap; 
+            word-break: break-word; 
             color: var(--code-text); 
             background: var(--code-bg); 
-            tab-size: 2;
         }
-        /* 注释单元格修复 */
         .comment-cell { 
             color: var(--comment-text); 
             background: var(--comment-bg); 
-            line-height: 1.6; 
-            word-break: break-word;
+            line-height: 1.5; 
+            width: 45%; 
         }
-        /* 表格斑马纹优化 */
-        .config-table tbody tr:nth-child(even) .code-cell { filter: brightness(0.98); }
-        .config-table tbody tr:nth-child(even) .comment-cell { filter: brightness(0.98); }
-        .config-table tbody tr:hover td { filter: brightness(0.97); transition: filter 0.1s ease; }
-        /* 说明盒子样式优化 */
         .info-box {
             background: var(--info-bg);
-            padding: 1.2rem 1.5rem;
+            padding: 1rem;
             margin: 1rem;
             border-radius: 8px;
             color: var(--info-text);
             font-size: 0.85rem;
-            line-height: 1.7;
-        }
-        .info-box code {
-            background: var(--inline-code-bg);
-            color: var(--inline-code-text);
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.9em;
-        }
-        .info-box strong { font-weight: 600; }
-        /* 滚动条样式适配日夜模式 */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { filter: brightness(0.9); }
-        /* 响应式布局修复 */
-        @media (max-width: 1200px) {
-            .config-table th:nth-child(2) { width: 55%; }
-            .config-table th:nth-child(3) { width: calc(45% - 60px); }
         }
         @media (max-width: 768px) {
-            body { padding: 0.5rem; }
-            .header { padding: 1rem; flex-direction: column; align-items: flex-start; }
-            .header-tools { width: 100%; justify-content: space-between; }
-            .config-table { table-layout: auto; min-width: 900px; }
-            .config-table th, .config-table td { padding: 0.5rem 0.4rem; }
-            .code-cell, .comment-cell { font-size: 0.75rem; }
-            .info-box { margin: 0.5rem; padding: 1rem; }
-            .table-wrapper { max-height: calc(100vh - 320px); }
-        }
-        @media (max-width: 480px) {
-            .theme-switcher { gap: 0.3rem; }
-            .theme-btn { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
-            .copy-btn { padding: 0.3rem 0.7rem; font-size: 0.75rem; }
+            .comment-cell { width: 50%; }
+            .config-table td, .config-table th { padding: 0.4rem 0.5rem; }
+            .code-cell, .comment-cell { font-size: 0.7rem; }
+            .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <div class="header-title">
-            <h1>📄 sing-box 全功能分流配置 逐行注释稳定版</h1>
-            <p>✅ 兼容sing-box 1.13.8正式版 · FakeIP防污染 · 广告拦截 · 全场景智能分流</p>
+        <div>
+            <h1>📄 sing-box 完整配置逐行注释 (1.13.9 完整版)</h1>
+            <p>✅ 全功能稳定版 · 适配 1.13.9 正式版 · 内置CF优选节点/规则集</p>
         </div>
-        <div class="header-tools">
-            <button class="copy-btn" id="copyConfigBtn">📋 一键复制完整配置</button>
-            <div class="theme-switcher">
-                <button class="theme-btn active" data-theme="auto">🌓 自动</button>
-                <button class="theme-btn" data-theme="light">☀️ 亮色</button>
-                <button class="theme-btn" data-theme="dark">🌙 暗色</button>
-            </div>
+        <div class="theme-switcher">
+            <button class="theme-btn active" data-theme="auto">🌓 自动</button>
+            <button class="theme-btn" data-theme="light">☀️ 亮色</button>
+            <button class="theme-btn" data-theme="dark">🌙 暗色</button>
         </div>
     </div>
-    <!-- 表格容器修复 - 解决表头吸顶失效 -->
-    <div class="table-wrapper">
+    <div style="overflow-x: auto;">
         <table class="config-table">
             <thead>
-                <tr>
-                    <th>行号</th>
-                    <th>配置代码</th>
-                    <th>注释 / 详细说明 / 疑惑解答</th>
-                </tr>
+                <tr><th>行号</th><th>配置代码</th><th>注释 / 详细说明</th></tr>
             </thead>
             <tbody id="table-body">
                 <!-- 动态生成 -->
@@ -327,17 +214,17 @@
     </div>
     <div class="info-box">
         <strong>📌 使用说明：</strong><br>
-        1. 本配置完全基于 <code>2.txt</code> 生成，100%兼容sing-box 1.13.8正式版，语法完全符合官方规范，无兼容性问题；<br>
-        2. 【必填修改项】出站列表中的 <code>AUTO</code> 自动测速节点的 <code>outbounds</code> 数组为空白，必须填入您自己的真实节点标签，否则自动选线功能无法生效；<br>
-        3. 核心特性：TUN全局代理+混合代理双入站、FakeIP防DNS污染、双广告规则集全量拦截、AI/游戏/海外站点专属分流、Clash模式全兼容、安卓APP专属规则；<br>
-        4. DNS分流设计：内网域名走本地DNS、国内域名走阿里云UDP DNS、海外代理域名走Google DoH代理解析+FakeIP，从根源杜绝DNS污染；<br>
-        5. 点击右上角「一键复制完整配置」按钮，补充节点信息后，可直接导入sing-box全平台客户端使用。
+        1. 本表格完全基于 <code>1.13.9.txt</code> 生成，字段无任何遗漏，可直接复制使用；<br>
+        2. 出站列表中 <code>AUTO</code> 自动测速组已内置14个CF优选节点，可按需增删或替换为自有节点；<br>
+        3. 节点核心参数（UUID、WS路径、Host、SNI）已统一配置，替换节点时仅需修改server地址即可；<br>
+        4. <strong>⭐ ECS 客户端子网配置</strong>：配置中的 <code>"client_subnet": "119.134.100.0/24"</code> 为广东茂名示例IP。你需要<strong>关闭代理</strong>后访问 ip.sb 等网站获取当前公网IP，然后将 <code>119.134.100.0</code> 替换为你的公网IP段（保留 /24 子网掩码）。例如公网IP为 203.0.113.5，则填入 <code>"203.0.113.0/24"</code>；<br>
+        5. 内置广告拦截、国内直连、代理分流、FakeIP优化、QUIC屏蔽等规则，适配Windows/Mac/Android/iOS全平台；<br>
+        6. 复制表格中「配置代码」列的完整内容，可直接导入 sing-box 客户端使用（仅需替换ECS子网为自身网段）。
     </div>
 </div>
 <script>
 (function() {
-    'use strict';
-    // ----- 2.txt 规范JSON配置内容 (逐行数组，缩进完全规范，JSON语法100%正确) -----
+    // ----- 1.13.9.txt 完整配置内容 (逐行数组，与原文件完全一致) -----
     const configLines = [
         "{",
         "  \"log\": {",
@@ -415,28 +302,10 @@
         "      \"action\": \"reject\"",
         "    },",
         "    {",
-        "      \"rule_set\": [",
-        "        \"proxy\",",
-        "        \"games\",",
-        "        \"ai\"",
-        "      ],",
-        "      \"query_type\": [",
-        "        \"A\",",
-        "        \"AAAA\"",
-        "      ],",
-        "      \"server\": \"fakeip\"",
-        "    },",
-        "    {",
-        "      \"rule_set\": [",
-        "        \"proxy\",",
-        "        \"games\",",
-        "        \"ai\"",
-        "      ],",
-        "      \"query_type\": [",
-        "        \"A\",",
-        "        \"AAAA\"",
-        "      ],",
-        "      \"server\": \"ggdns_doh\",",
+        "      \"rule_set\": [\"proxy\", \"games\", \"ai\"],",
+        "      \"query_type\": [\"A\", \"AAAA\"],",
+        "      \"server\": \"fakeip\",",
+        "      \"rewrite_ttl\": 300,",
         "      \"client_subnet\": \"119.134.100.0/24\"",
         "    },",
         "    {",
@@ -484,7 +353,7 @@
         "    {",
         "      \"type\": \"mixed\",",
         "      \"tag\": \"mixed-in\",",
-        "      \"listen\": \"127.0.0.1\",",
+        "      \"listen\": \"12.0.0.1\",",
         "      \"listen_port\": 7890",
         "    }",
         "  ],",
@@ -498,6 +367,19 @@
         "      \"tag\": \"PROXY\",",
         "      \"outbounds\": [",
         "        \"AUTO\",",
+        "        \"🚀 CF-优选-Visa\",",
+        "        \"🚀 CF-优选-DO\",",
+        "        \"🚀 CF-优选-Shopify\",",
+        "        \"🚀 CF-优选-Sweden\",",
+        "        \"🚀 CF-优选-Udemy\",",
+        "        \"🚀 CF-IP-198段\",",
+        "        \"🚀 CF-IP-104-A\",",
+        "        \"🚀 CF-IP-104-Fast1\",",
+        "        \"🚀 CF-IP-104-Fast2\",",
+        "        \"🚀 CF-IP-104-Fast3\",",
+        "        \"🚀 CF-IP-172-Fast\",",
+        "        \"🚀 CF-IP-162-Fast\",",
+        "        \"🚀 CF-域名-CFGO\",",
         "        \"DIRECT\"",
         "      ],",
         "      \"default\": \"AUTO\",",
@@ -507,6 +389,19 @@
         "      \"type\": \"urltest\",",
         "      \"tag\": \"AUTO\",",
         "      \"outbounds\": [",
+        "        \"🚀 CF-优选-Visa\",",
+        "        \"🚀 CF-优选-DO\",",
+        "        \"🚀 CF-优选-Shopify\",",
+        "        \"🚀 CF-优选-Sweden\",",
+        "        \"🚀 CF-优选-Udemy\",",
+        "        \"🚀 CF-IP-198段\",",
+        "        \"🚀 CF-IP-104-A\",",
+        "        \"🚀 CF-IP-104-Fast1\",",
+        "        \"🚀 CF-IP-104-Fast2\",",
+        "        \"🚀 CF-IP-104-Fast3\",",
+        "        \"🚀 CF-IP-172-Fast\",",
+        "        \"🚀 CF-IP-162-Fast\",",
+        "        \"🚀 CF-域名-CFGO\"",
         "      ],",
         "      \"url\": \"http://www.gstatic.com/generate_204\",",
         "      \"interval\": \"10m\",",
@@ -533,6 +428,331 @@
         "      ],",
         "      \"default\": \"DIRECT\",",
         "      \"interrupt_exist_connections\": false",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-优选-Visa\",",
+        "      \"server\": \"www.visa.com\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-优选-DO\",",
+        "      \"server\": \"www.digitalocean.com\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-优选-Shopify\",",
+        "      \"server\": \"www.shopify.com\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-优选-Sweden\",",
+        "      \"server\": \"www.gov.se\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-优选-Udemy\",",
+        "      \"server\": \"www.udemy.com\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-IP-198段\",",
+        "      \"server\": \"198.41.208.138\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-IP-104-A\",",
+        "      \"server\": \"104.16.1.1\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-IP-104-Fast1\",",
+        "      \"server\": \"104.17.152.41\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-IP-104-Fast2\",",
+        "      \"server\": \"372164885.xyz\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-IP-104-Fast3\",",
+        "      \"server\": \"104.24.52.82\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-IP-172-Fast\",",
+        "      \"server\": \"172.64.153.18\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-IP-162-Fast\",",
+        "      \"server\": \"104.19.140.151\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
+        "    },",
+        "    {",
+        "      \"tag\": \"🚀 CF-域名-CFGO\",",
+        "      \"server\": \"cloudflare.cfgo.cc\",",
+        "      \"server_port\": 443,",
+        "      \"type\": \"vless\",",
+        "      \"uuid\": \"a8ceaac6-bda6-459e-ace7-0b34c5873e1e\",",
+        "      \"transport\": {",
+        "        \"type\": \"ws\",",
+        "        \"path\": \"/pkpk-vl\",",
+        "        \"headers\": {",
+        "          \"Host\": \"cvb.372164885.xyz\"",
+        "        }",
+        "      },",
+        "      \"tls\": {",
+        "        \"enabled\": true,",
+        "        \"server_name\": \"cvb.372164885.xyz\",",
+        "        \"utls\": {",
+        "          \"enabled\": true,",
+        "          \"fingerprint\": \"chrome\"",
+        "        },",
+        "        \"alpn\": [",
+        "          \"http/1.1\"",
+        "        ]",
+        "      }",
         "    }",
         "  ],",
         "  \"route\": {",
@@ -793,552 +1013,853 @@
         "  }",
         "}"
     ];
-    // ----- 逐行对应完整注释（含说明、疑惑解答、注意事项，与配置行1:1对应） -----
+    // 逐行注释数组（与configLines完全一一对应，适配1.13.9配置）
     const comments = [
-        "sing-box 配置根对象起始括号，所有配置项必须包裹在此JSON对象内，JSON语法要求必须成对闭合",
-        "日志配置模块，用于控制sing-box的日志输出级别、格式等行为，是排查代理故障、定位问题的核心模块",
-        "【核心配置】日志级别设置为trace | 说明：可选值从低到高为panic/fatal/error/warn/info/debug/trace，trace级别会输出最详细的全流程日志，包含DNS解析、路由匹配、节点连接等所有细节，适合深度排查问题；日常使用建议改为info级别，减少日志体积 | 疑惑解答：为什么日常不用trace？trace会产生大量日志，占用磁盘IO和存储空间，长期运行可能导致磁盘占用过高，仅排查问题时临时开启即可",
-        "开启日志时间戳 | 说明：开启后每条日志都会带上精确的时间戳，方便回溯问题和定位故障发生时间 | 注意：不建议关闭，无时间戳的日志几乎无排查价值",
-        "日志配置模块闭合，结束日志相关配置",
-        "NTP时间同步模块，用于自动同步系统时间，代理节点的TLS加密连接对系统时间精度要求极高，时间误差过大会直接导致节点连接失败",
-        "开启NTP时间同步功能 | 注意：强烈建议开启，尤其是路由器、旁路由、开发板等无系统自动时间同步的设备，Windows/Mac/手机端开启也可避免系统时间异常导致的代理失效",
-        "NTP时间服务器地址，使用阿里云公共NTP服务器，国内访问延迟低、稳定性高，无需代理即可正常访问",
-        "NTP服务端口，固定为123，是NTP协议的标准端口，无需修改",
-        "时间同步间隔设置为30分钟 | 说明：平衡时间精度和设备资源占用，30分钟同步一次可保证系统时间误差始终在合理范围内，避免频繁同步带来的无效流量",
-        "NTP时间同步模块闭合，结束时间同步相关配置",
-        "DNS配置模块，sing-box的核心防污染与分流模块，决定域名的解析策略，直接影响代理的防污染效果、访问速度和分流准确性",
-        "DNS服务器列表，定义所有可用的DNS解析服务，支持local/udp/https/tcp/DoQ/fakeip等多种DNS类型",
-        "第一个DNS服务器：本地系统DNS",
-        "DNS服务器标签，用于其他配置项引用该服务器，必须全局唯一，大小写敏感",
-        "DNS服务器类型为local，即调用设备系统自带的DNS配置进行解析",
-        "本地系统DNS服务器配置闭合",
-        "第二个DNS服务器：阿里云公共DNS（UDP协议）",
-        "服务器标签，用于规则引用，全局唯一",
-        "DNS服务器类型为udp，使用标准UDP协议进行DNS解析",
-        "DNS服务器地址，使用阿里云公共DNS的IPv4地址223.5.5.5，国内访问速度快、无污染、无劫持",
-        "阿里云UDP DNS服务器配置闭合",
-        "第三个DNS服务器：Google DoH加密DNS（HTTPS协议）",
-        "服务器标签，用于规则引用，全局唯一",
-        "DNS服务器类型为https，即DoH（DNS over HTTPS）加密DNS协议，全程加密传输，彻底避免DNS劫持和污染",
-        "DoH服务器地址，使用Google官方的公共DoH服务地址，海外访问稳定、隐私性强",
-        "该DNS服务器的流量走PROXY代理出站 | 说明：海外DoH服务器必须通过代理才能正常访问，同时确保海外域名的解析全程走代理，从根源避免DNS污染",
-        "Google DoH DNS服务器配置闭合",
-        "第四个DNS服务器：FakeIP虚拟IP DNS",
-        "服务器标签，用于规则引用，全局唯一",
-        "DNS服务器类型为fakeip，sing-box专属的虚拟IP技术",
-        "FakeIP的IPv4地址段，使用198.18.0.0/15保留网段，该网段为公网保留地址，不会与正常公网IP冲突 | 疑惑解答：FakeIP的作用是什么？FakeIP会给代理域名分配一个固定的虚拟内网IP，减少DNS解析耗时，避免DNS污染，同时大幅提升TCP连接复用率，配合TUN入站效果最佳",
-        "FakeIP DNS服务器配置闭合",
-        "DNS服务器列表闭合，结束DNS服务器定义",
-        "DNS规则列表，定义不同域名/场景对应的DNS解析服务器，规则按从上到下的顺序匹配，匹配到第一条后不再继续向下匹配，规则顺序至关重要",
-        "第一条DNS规则：内网/路由器管理域名走本地DNS解析",
-        "匹配域名后缀列表，包含内网常用域名后缀和各大品牌路由器的管理后台域名",
-        "匹配.local后缀的内网域名，局域网设备专用域名",
-        "匹配.lan后缀的内网域名，常见于OpenWRT等路由器系统",
-        "匹配小米/红米路由器的管理后台域名miwifi.com",
-        "匹配TP-LINK路由器的管理后台域名tplogin.cn",
-        "匹配华硕路由器的管理后台域名router.asus.com",
-        "匹配腾达路由器的管理后台域名tendawifi.com",
-        "匹配TP-LINK路由器的备用管理后台域名tplinkwifi.net",
-        "域名后缀匹配列表闭合",
-        "匹配到的域名使用local本地DNS服务器解析 | 说明：路由器管理后台和内网设备必须用本地DNS解析，才能正常访问局域网设备，避免代理后无法打开路由器后台",
-        "内网域名DNS规则闭合",
-        "第二条DNS规则：统计/埋点/广告域名走阿里云DNS解析",
-        "匹配域名后缀列表，包含各大厂商的用户行为统计、埋点、广告追踪域名",
-        "匹配谷歌应用统计域名app-measurement.com",
-        "匹配百度统计域名hm.baidu.com",
-        "匹配Firebase日志上报域名firebaselogging.googleapis.com",
-        "匹配Firebase移动端日志上报域名firebaselogging-pa.googleapis.com",
-        "匹配谷歌广告信标域名beacons.gvt2.com",
-        "匹配谷歌备用广告信标域名beacons2.gvt2.com",
-        "匹配谷歌备用广告信标域名beacons3.gvt2.com",
-        "匹配小米MIUI系统追踪域名tracking.miui.com",
-        "域名后缀匹配列表闭合",
-        "匹配到的域名使用alidns_udp阿里云DNS解析 | 说明：此类统计域名无需走代理解析，用国内DNS快速解析后，可配合后续规则直接拦截，减少无效代理流量",
-        "统计埋点域名DNS规则闭合",
-        "第三条DNS规则：广告域名直接拒绝解析",
-        "匹配广告规则集列表，包含两大主流广告拦截规则集",
-        "匹配AdGuard广告过滤规则集geosite_adguard",
-        "匹配官方全量广告域名规则集geosite-category-ads-all",
-        "广告规则集匹配列表闭合",
-        "匹配到的广告域名执行reject拒绝动作 | 说明：直接拒绝广告域名的DNS解析请求，从根源拦截广告，比后续路由拦截更前置，减少无效流量",
-        "广告域名拦截DNS规则闭合",
-        "第四条DNS规则：特殊DNS记录类型直接拒绝",
-        "匹配DNS查询类型列表，包含三类日常代理场景几乎用不到的DNS记录",
-        "匹配SVCB类型DNS记录，HTTP/3相关的服务绑定记录",
-        "匹配HTTPS类型DNS记录，HTTP/3相关的加密服务记录",
-        "匹配PTR类型DNS记录，IP反向解析记录",
-        "DNS查询类型匹配列表闭合",
-        "匹配到的记录类型执行reject拒绝动作 | 说明：SVCB/HTTPS记录常被运营商用于DNS污染和劫持，PTR反向解析日常几乎不用，直接拒绝可减少无效DNS请求，提升解析速度，避免异常解析结果导致的访问异常",
-        "特殊DNS记录拦截规则闭合",
-        "第五条DNS规则：代理/游戏/AI域名使用FakeIP解析",
-        "匹配规则集列表，包含三大类需要走代理的域名规则集",
-        "匹配海外代理站点规则集proxy",
-        "匹配海外游戏规则集games",
-        "匹配海外AI站点规则集ai",
-        "规则集匹配列表闭合",
-        "匹配A类型（IPv4地址）和AAAA类型（IPv6地址）的DNS查询",
-        "匹配IPv4地址查询A记录",
-        "匹配IPv6地址查询AAAA记录",
-        "DNS查询类型匹配列表闭合",
-        "匹配到的域名使用fakeip虚拟IP DNS解析 | 说明：给需要代理的域名分配虚拟IP，提升连接速度，避免DNS污染，是TUN模式下的核心优化配置",
-        "代理域名FakeIP解析规则闭合",
-        "第六条DNS规则：代理/游戏/AI域名使用Google DoH代理解析",
-        "匹配规则集列表，和上一条规则一致，确保覆盖所有代理类域名",
-        "匹配海外代理站点规则集proxy",
-        "匹配海外游戏规则集games",
-        "匹配海外AI站点规则集ai",
-        "规则集匹配列表闭合",
-        "匹配A类型（IPv4地址）和AAAA类型（IPv6地址）的DNS查询",
-        "匹配IPv4地址查询A记录",
-        "匹配IPv6地址查询AAAA记录",
-        "DNS查询类型匹配列表闭合",
-        "匹配到的域名使用ggdns_doh Google DoH代理解析",
-        "设置EDNS客户端子网为广东茂名网段119.134.100.0/24 | 说明：EDNS客户端子网可让CDN节点返回离用户最近的接入点IP，大幅提升海外站点的访问速度和下载速度",
-        "代理域名DoH代理解析规则闭合",
-        "第七条DNS规则：国内应用/缓存域名走阿里云DNS解析",
-        "匹配域名后缀列表，包含小米应用商店、Steam局域网缓存等国内直连访问的域名",
-        "匹配小米应用商店域名market.xiaomi.com",
-        "匹配Steam局域网缓存域名lancache.steamcontent.com",
-        "域名后缀匹配列表闭合",
-        "匹配到的域名使用alidns_udp阿里云DNS解析 | 说明：此类域名国内直连访问速度最快，无需走代理解析，避免代理后访问变慢",
-        "国内应用域名DNS规则闭合",
-        "第八条DNS规则：谷歌系核心域名使用FakeIP解析",
-        "匹配域名后缀列表，包含谷歌应用、谷歌图片、安卓系统等核心域名",
-        "匹配谷歌应用商店域名play.google.com",
-        "匹配谷歌图片域名ggpht.com",
-        "匹配谷歌用户内容域名googleusercontent.com",
-        "匹配安卓官方域名android.com",
-        "域名后缀匹配列表闭合",
-        "匹配到的域名使用fakeip虚拟IP DNS解析 | 说明：谷歌系域名是高频访问的代理站点，使用FakeIP可大幅提升访问速度和连接稳定性",
-        "谷歌系域名FakeIP解析规则闭合",
-        "第九条DNS规则：Clash Direct模式下所有域名走阿里云DNS解析",
+        "sing-box 配置根对象，完整配置入口，适配1.13.9正式版",
+        "日志系统配置块，控制日志输出行为",
+        "日志输出级别：trace，输出最详细的调试日志，可选值：panic/fatal/error/warn/info/debug/trace",
+        "开启日志时间戳，便于问题排查和日志回溯",
+        "日志配置块结束",
+        "NTP网络时间同步配置块，保证系统时间准确，避免TLS证书验证失败",
+        "启用NTP时间同步功能",
+        "NTP服务器地址，使用阿里云公共NTP服务，国内访问稳定",
+        "NTP服务端口，标准UDP 123端口",
+        "时间同步间隔，每30分钟同步一次系统时间",
+        "NTP配置块结束",
+        "DNS核心配置块，防污染、分流解析、缓存优化核心模块",
+        "DNS服务器列表，定义多个不同用途的DNS解析源",
+        "本地DNS服务器配置",
+        "本地DNS的标签标识，用于规则中引用",
+        "DNS类型为local，使用系统本地默认DNS进行解析",
+        "本地DNS配置块结束",
+        "阿里云UDP DNS服务器配置，国内低延迟直连解析",
+        "alidns_udp的标签标识，国内核心DNS服务",
+        "DNS类型为udp，使用标准UDP协议传输DNS请求",
+        "DNS服务器地址，阿里云公共DNS主IP",
+        "alidns_udp配置块结束",
+        "Google DoH（HTTPS协议DNS）服务器配置，境外域名防污染解析",
+        "ggdns_doh的标签标识，用于境外域名解析",
+        "DNS类型为https，使用HTTPS协议加密DNS请求，防污染",
+        "DoH服务器地址，Google公共DNS域名",
+        "该DNS请求的转发出站，使用PROXY代理保证可访问",
+        "ggdns_doh配置块结束",
+        "FakeIP虚拟IP配置，用于TCP连接加速，减少DNS解析耗时",
+        "fakeip的标签标识，用于规则中引用",
+        "DNS类型为fakeip，返回虚拟IP地址，实现TCP握手提前",
+        "FakeIP IPv4地址池，使用RFC保留地址段，无地址冲突",
+        "fakeip配置块结束",
+        "DNS服务器列表结束",
+        "DNS分流规则列表，按从上到下优先级匹配，匹配即停止",
+        "内网/路由器管理域名规则，使用本地DNS解析",
+        "匹配的内网域名后缀列表",
+        "局域网本地域名后缀",
+        "局域网本地域名后缀",
+        "小米路由器管理域名",
+        "TP-Link路由器管理域名",
+        "华硕路由器管理域名",
+        "腾达路由器管理域名",
+        "TP-Link新版路由器管理域名",
+        "内网域名后缀列表结束",
+        "匹配该规则的域名使用local本地DNS解析",
+        "内网域名规则结束",
+        "统计/埋点域名白名单规则，避免广告规则误拦截",
+        "匹配域名后缀列表",
+        "Google应用统计埋点域名",
+        "百度统计埋点域名",
+        "Google Firebase日志上报域名",
+        "Google Firebase Play版日志上报域名",
+        "Google灯塔埋点域名",
+        "Google灯塔埋点备用域名1",
+        "Google灯塔埋点备用域名2",
+        "小米系统跟踪埋点域名",
+        "域名后缀列表结束",
+        "匹配该规则的域名使用alidns_udp进行解析",
+        "埋点白名单规则结束",
+        "广告域名拦截规则，双规则集叠加拦截",
+        "匹配的广告规则集列表",
+        "AdGuard广告过滤规则集",
+        "sing-geosite全量广告分类规则集",
+        "广告规则集列表结束",
+        "匹配到广告域名时执行拒绝动作，直接拦截",
+        "广告拦截规则结束",
+        "SVCB/HTTPS/PTR类型DNS查询拦截规则，避免IPv6干扰和异常解析",
+        "匹配的DNS查询类型列表",
+        "SVCB记录类型，用于HTTPSSVC服务发现",
+        "HTTPS记录类型，HTTP3服务相关记录",
+        "PTR反向IP解析记录类型",
+        "查询类型列表结束",
+        "匹配该类型的DNS查询直接拒绝",
+        "异常查询拦截规则结束",
+        "代理/游戏/AI域名FakeIP规则，加速TCP连接",
+        "匹配的规则集列表，包含代理、游戏、AI相关域名",
+        "匹配的DNS查询类型，仅IPv4和IPv6地址记录",
+        "A记录，IPv4地址解析",
+        "AAAA记录，IPv6地址解析",
+        "查询类型列表结束",
+        "匹配该规则的域名使用fakeip返回虚拟IP",
+        "重写解析结果的TTL为300秒，优化缓存时长",
+        "ECS客户端子网，传递用户IP段给DNS，优化CDN解析结果，需替换为自身公网IP段",
+        "FakeIP加速规则结束",
+        "国内特定服务域名解析规则，使用国内阿里云DNS",
+        "匹配的域名后缀列表",
+        "小米应用商店域名，保证国内下载速度",
+        "Steam本地缓存域名，局域网游戏更新加速",
+        "域名后缀列表结束",
+        "匹配该规则的域名使用alidns_udp解析",
+        "国内服务域名规则结束",
+        "Google核心服务域名FakeIP规则，加速访问",
+        "匹配的域名后缀列表",
+        "Google Play应用商店域名",
+        "Google图片服务域名",
+        "Google用户内容服务域名",
+        "Android官方域名",
+        "域名后缀列表结束",
+        "匹配该规则的域名使用fakeip返回虚拟IP",
+        "Google服务FakeIP规则结束",
+        "Clash直连模式DNS规则，直连模式下使用国内DNS",
         "匹配Clash运行模式为direct直连模式",
-        "匹配到的所有域名使用alidns_udp阿里云DNS解析 | 说明：兼容Clash的直连模式，该模式下所有流量都走直连，DNS也使用国内直连解析，确保直连模式正常工作",
-        "Clash Direct模式DNS规则闭合",
-        "第十条DNS规则：Clash Global模式下所有域名走FakeIP解析",
+        "匹配该规则的域名使用alidns_udp解析",
+        "直连模式DNS规则结束",
+        "Clash全局模式DNS规则，全局模式下使用FakeIP加速",
         "匹配Clash运行模式为global全局模式",
-        "匹配到的所有域名使用fakeip虚拟IP DNS解析 | 说明：兼容Clash的全局模式，该模式下所有流量都走代理，使用FakeIP确保全局代理的防污染效果和连接速度",
-        "Clash Global模式DNS规则闭合",
-        "DNS规则列表闭合，结束DNS分流规则定义",
-        "【DNS兜底配置】所有未匹配到上述规则的域名，默认使用alidns_udp阿里云DNS解析 | 说明：实现「未匹配到代理规则的域名，默认国内直连解析」的核心逻辑，避免国内域名走海外DNS解析导致访问变慢",
-        "DNS解析策略设置为ipv4_only，仅解析IPv4地址，禁用IPv6解析 | 说明：目前绝大多数代理场景和节点都只支持IPv4，禁用IPv6可避免IPv6泄露、解析失败导致的访问异常，提升整体稳定性 | 疑惑解答：为什么不开启IPv6？如果你的节点和网络都支持IPv6，可改为ipv4_prefer（优先IPv4），不建议直接开启dual双栈，容易出现流量泄露",
-        "开启反向域名映射 | 说明：开启后会自动将FakeIP反向映射回对应的域名，提升日志可读性，方便排查问题，同时提升部分应用的兼容性",
-        "DNS缓存容量设置为8000条 | 说明：缓存最多8000条DNS解析结果，避免重复解析，大幅提升域名访问速度，平衡内存占用和解析性能，路由器等低内存设备可适当调低",
-        "DNS配置模块闭合，结束DNS相关配置",
-        "入站配置模块，定义sing-box接收流量的入口，支持TUN、混合代理、Socks、HTTP、ShadowTLS等多种入站类型，是代理接管流量的核心",
-        "入站配置列表，可同时配置多个不同类型的入站，同时接管不同场景的流量",
-        "第一个入站：TUN虚拟网卡入站，实现全局透明代理，接管设备所有流量",
-        "入站类型为tun，即虚拟网卡入站，是实现全局代理的核心",
-        "入站标签，用于其他配置项引用该入站，全局唯一",
-        "TUN虚拟网卡的IP地址配置",
-        "给TUN网卡分配IPv4地址10.8.0.1/24网段 | 说明：该网段为私有内网网段，必须是设备局域网未占用的网段，避免IP冲突导致TUN启动失败",
-        "TUN网卡IP地址配置闭合",
-        "MTU设置为1500，是以太网的标准MTU值 | 说明：MTU是最大传输单元，1500是绝大多数网络环境的最优值，平衡传输效率和IP分片风险，过大容易导致IP分片，反而降低传输稳定性",
-        "TUN协议栈设置为mixed混合栈 | 说明：mixed栈是system和gvisor栈的混合模式，兼顾性能和兼容性，是sing-box 1.10.0+版本的推荐栈，Windows/Mac/Linux/安卓全平台兼容 | 疑惑解答：不同协议栈的区别？system栈性能最高但兼容性差，gvisor栈兼容性最好但性能略低，mixed栈平衡两者优势，绝大多数场景首选",
-        "开启自动路由 | 说明：开启后sing-box会自动配置系统路由表，把设备所有流量自动导入TUN虚拟网卡，是TUN模式正常工作的核心配置，必须开启",
-        "开启严格路由 | 说明：开启后会严格过滤非TUN入口的流量，防止流量绕过代理导致泄露，大幅提升代理的安全性和防泄露能力，强烈建议开启",
-        "TUN虚拟网卡入站配置闭合",
-        "第二个入站：mixed混合代理入站，同时支持HTTP和Socks5代理协议",
-        "入站类型为mixed混合代理，同时兼容HTTP和Socks5协议，无需单独配置两个入站",
-        "入站标签，用于其他配置项引用该入站，全局唯一",
-        "监听地址为127.0.0.1，仅本机可访问该代理入口 | 说明：如果需要给局域网内其他设备提供代理，需改为0.0.0.0，同时开放防火墙对应端口",
-        "监听端口为7890，是代理软件的通用默认端口，可自行修改为未被占用的端口 | 说明：浏览器、下载工具等软件可通过该端口手动配置代理",
-        "mixed混合代理入站配置闭合",
-        "入站配置列表闭合，结束流量入口配置",
-        "出站配置模块，定义sing-box流量的出口，是节点管理、手动切换、自动选线、分流的核心模块",
-        "出站配置列表，可同时配置多个节点、选择器、直连等不同类型的出站",
-        "第一个出站：DIRECT直连出站，流量直接访问目标地址，不经过任何代理",
-        "出站类型为direct直连，流量直接从本地网卡发出",
-        "出站标签为DIRECT，全大写，其他配置项必须和该标签完全一致才能引用 | 注意：sing-box的标签大小写敏感，DIRECT和direct是两个完全不同的标签，必须严格对应",
-        "DIRECT直连出站配置闭合",
-        "第二个出站：PROXY选择器出站，用于手动切换代理节点/线路，支持Clash面板可视化切换",
-        "出站类型为selector选择器，可在多个子出站之间手动切换",
-        "出站标签为PROXY，是分流规则的默认代理出口，全局唯一",
-        "选择器包含的子出站列表，可在Clash面板中手动切换这些出站",
-        "AUTO自动测速选线出站，默认首选",
-        "DIRECT直连出站，可手动切换为直连",
-        "子出站列表闭合",
-        "选择器默认选中AUTO自动测速出站",
-        "切换节点时不中断已存在的连接 | 说明：关闭后切换节点时，已建立的连接不会断开，避免切换节点时网页、视频、下载中断，提升使用体验",
-        "PROXY选择器出站配置闭合",
-        "第三个出站：AUTO自动测速选线出站，自动测试节点延迟，选择延迟最低的节点，无需手动切换",
-        "出站类型为urltest，即URL自动测速选线",
-        "出站标签为AUTO，被上面的PROXY选择器引用，全局唯一",
-        "自动测速的节点列表，会对列表内的所有节点进行延迟测试 | 【必填修改项】这里必须填入您自己的节点标签，否则自动选线功能无法生效",
-        "测速节点列表闭合",
-        "测速地址，使用谷歌的generate_204地址 | 说明：urltest通过访问该地址的耗时来计算节点延迟，204地址无返回内容，测速速度快、全球通用、稳定性极高",
-        "测速间隔设置为10分钟 | 说明：每10分钟自动执行一次测速，平衡节点切换的实时性和节点负载，频繁测速会增加节点流量消耗",
-        "测速容忍值设置为50ms | 说明：只有当新节点的延迟比当前使用的节点低50ms以上时，才会自动切换节点，避免网络波动导致的频繁切换，防止连接中断",
-        "空闲超时设置为30分钟 | 说明：超过30分钟无流量的节点，会暂停测速，减少无效流量和资源占用",
-        "切换节点时不中断已存在的连接，和上面的选择器配置保持一致",
-        "AUTO自动测速出站配置闭合",
-        "第四个出站：GLOBAL选择器出站，对应Clash的Global全局模式",
-        "出站类型为selector选择器",
-        "出站标签为GLOBAL，对应Clash全局模式的出口，全局唯一",
-        "选择器包含的子出站列表",
-        "PROXY代理出站，全局模式默认走代理",
-        "DIRECT直连出站，可手动切换全局直连",
-        "子出站列表闭合",
-        "选择器默认选中PROXY代理出站",
-        "切换节点时不中断已存在的连接",
-        "GLOBAL选择器出站配置闭合",
-        "第五个出站：CN选择器出站，用于国内流量的手动切换",
-        "出站类型为selector选择器",
-        "出站标签为CN，对应国内流量的出口，全局唯一",
-        "选择器包含的子出站列表",
-        "DIRECT直连出站，国内流量默认直连",
-        "PROXY代理出站，可手动切换国内流量走代理",
-        "子出站列表闭合",
-        "选择器默认选中DIRECT直连出站",
-        "切换节点时不中断已存在的连接",
-        "CN选择器出站配置闭合",
-        "出站配置列表闭合，结束流量出口配置",
-        "路由配置模块，sing-box的核心分流模块，定义流量的最终走向（直连/代理/拦截），是实现国内外智能分流的核心",
-        "设置默认域名解析器为alidns_udp阿里云DNS | 说明：未匹配到DNS规则的域名，默认使用该解析器进行解析，和DNS模块的final配置保持一致，确保解析逻辑统一",
-        "路由规则列表，按从上到下的顺序匹配，匹配到第一条规则后不再继续向下匹配，规则顺序至关重要，必须严格遵循「特殊规则在前，通用规则在后」的原则",
-        "第一条路由规则：DNS流量全局劫持",
-        "规则类型为logical逻辑规则，可组合多个子规则，实现多条件匹配",
-        "逻辑模式为or，即多个子规则满足任意一个，就匹配该规则",
-        "逻辑规则的子规则列表",
-        "第一个子规则：匹配目标端口为53的流量 | 说明：53端口是DNS协议的标准端口，绝大多数DNS请求都走该端口",
-        "第一个子规则闭合",
-        "第二个子规则：匹配协议类型为dns的流量 | 说明：sing-box通过流量嗅探识别出的DNS协议流量，即使不走53端口也能匹配",
-        "第二个子规则闭合",
-        "子规则列表闭合",
-        "匹配到的流量执行hijack-dns劫持动作 | 说明：把设备所有的DNS请求全部劫持到sing-box的DNS模块处理，确保所有DNS解析都遵循我们配置的分流规则，彻底避免系统DNS泄露和污染，是防DNS污染的核心规则，必须放在最前面",
-        "DNS流量劫持规则闭合",
-        "第二条路由规则：全局流量嗅探",
-        "执行sniff嗅探动作 | 说明：对所有流量进行协议嗅探，识别流量中的域名、协议类型（HTTP/TLS/QUIC/BitTorrent等），只有嗅探到域名信息，后续的域名分流规则才能生效，是域名分流的基础，必须放在所有分流规则之前",
-        "全局流量嗅探规则闭合",
-        "第三条路由规则：路由器管理域名直连",
-        "匹配域名后缀为miwifi.com的小米路由器管理后台域名",
-        "域名后缀匹配列表闭合",
-        "匹配到的流量走DIRECT直连出站 | 说明：确保路由器管理后台必须走直连，避免代理后无法访问局域网内的路由器管理页面",
-        "路由器域名直连规则闭合",
-        "第四条路由规则：Clash Direct模式全流量直连",
+        "匹配该规则的域名使用fakeip解析",
+        "全局模式DNS规则结束",
+        "DNS分流规则列表结束",
+        "DNS最终兜底服务器，所有未匹配规则的域名默认使用alidns_udp解析",
+        "DNS解析策略，仅使用IPv4地址，彻底避免IPv6干扰",
+        "开启反向IP-域名映射，用于流量嗅探和域名识别",
+        "DNS缓存容量，最大缓存8000条解析记录，提升重复访问速度",
+        "DNS核心配置块结束",
+        "入站连接配置块，定义流量进入sing-box的入口",
+        "TUN虚拟网卡入站配置，全平台全局代理核心",
+        "入站类型为tun，创建虚拟网卡接管系统流量",
+        "tun入站的标签标识，用于规则引用",
+        "虚拟网卡的IP地址配置",
+        "虚拟网卡IPv4地址，使用10.8.0.0/24私有网段",
+        "IP地址数组结束",
+        "虚拟网卡MTU值，以太网标准1500字节，避免分片",
+        "TCP/IP协议栈类型，mixed混合模式，兼顾性能和兼容性",
+        "开启自动路由，自动配置系统路由表，将流量导入虚拟网卡",
+        "开启严格路由，防止流量泄露，确保所有流量都经过代理处理",
+        "TUN入站配置块结束",
+        "混合代理入站配置，兼容HTTP/SOCKS5代理协议",
+        "入站类型为mixed，同时支持HTTP和SOCKS5协议",
+        "mixed入站的标签标识",
+        "代理监听地址，仅本地环回地址，避免外部访问",
+        "代理监听端口，标准7890端口，兼容主流客户端",
+        "mixed入站配置块结束",
+        "入站连接配置块结束",
+        "出站连接配置块，定义流量流出sing-box的出口，包含节点、分流、自动选路",
+        "直连出站配置，流量直接访问目标地址，不经过代理",
+        "出站类型为direct，直连模式",
+        "直连出站的标签标识，全局核心分流标签",
+        "直连出站配置块结束",
+        "手动选择器出站配置，用于手动切换节点/出站模式",
+        "出站类型为selector，手动选择器类型",
+        "该选择器的标签标识，核心PROXY分流标签",
+        "可选择的出站列表",
+        "AUTO自动测速选路组",
+        "CF优选Visa域名节点",
+        "CF优选DO域名节点",
+        "CF优选Shopify域名节点",
+        "CF优选瑞典政府域名节点",
+        "CF优选Udemy域名节点",
+        "CF 198段直连IP节点",
+        "CF 104段A类IP节点",
+        "CF 104段高速IP节点1",
+        "CF 104段高速IP节点2",
+        "CF 104段高速IP节点3",
+        "CF 172段高速IP节点",
+        "CF 104段高速IP节点4",
+        "CF优选CFGO域名节点",
+        "DIRECT直连出站",
+        "可选出站列表结束",
+        "默认选择的出站，默认使用AUTO自动选路",
+        "切换出站时不中断已建立的连接，保证视频/下载不中断",
+        "PROXY选择器配置块结束",
+        "自动测速选路出站配置，urltest类型，自动选择延迟最低的节点",
+        "出站类型为urltest，自动测速选路核心类型",
+        "该自动选路组的标签标识，用于其他配置引用",
+        "参与自动测速的节点列表，包含所有CF优选节点",
+        "CF优选Visa域名节点",
+        "CF优选DO域名节点",
+        "CF优选Shopify域名节点",
+        "CF优选瑞典政府域名节点",
+        "CF优选Udemy域名节点",
+        "CF 198段IP节点",
+        "CF 104段A类IP节点",
+        "CF 104段高速IP节点1",
+        "CF 104段高速IP节点2",
+        "CF 104段高速IP节点3",
+        "CF 172段高速IP节点",
+        "CF 104段高速IP节点4",
+        "CF优选CFGO域名节点",
+        "测速节点列表结束",
+        "测速地址，Google官方204测速地址，无流量消耗",
+        "测速间隔，每10分钟执行一次测速，更新最优节点",
+        "测速容差50ms，仅当新节点延迟比当前节点低50ms以上才切换，避免频繁切换",
+        "空闲超时30分钟，超过30分钟无流量的节点将被重置测速",
+        "切换节点时不中断已建立的连接",
+        "自动测速选路配置块结束",
+        "全局选择器出站配置，Clash全局模式兼容",
+        "出站类型为selector",
+        "该选择器的标签标识，GLOBAL全局标签",
+        "可选择的出站列表",
+        "PROXY选择器",
+        "DIRECT直连出站",
+        "可选出站列表结束",
+        "默认选择的出站，默认使用PROXY",
+        "切换出站时不中断已建立的连接",
+        "GLOBAL选择器配置块结束",
+        "国内流量选择器出站配置，国内域名分流",
+        "出站类型为selector",
+        "该选择器的标签标识，CN国内分流标签",
+        "可选择的出站列表",
+        "DIRECT直连出站",
+        "PROXY代理出站",
+        "可选出站列表结束",
+        "默认选择的出站，国内域名默认直连",
+        "切换出站时不中断已建立的连接",
+        "CN选择器配置块结束",
+        "VLESS出站节点1，CF优选Visa域名节点",
+        "该节点的标签标识，用于自动选路和手动选择",
+        "节点服务器地址，Cloudflare优选域名",
+        "节点服务端口，HTTPS标准443端口",
+        "出站类型为vless，轻量级代理协议",
+        "VLESS协议认证UUID，节点核心认证信息",
+        "传输层配置块，WebSocket协议配置",
+        "传输类型为ws，WebSocket协议，兼容CDN转发",
+        "WebSocket请求路径，节点后端路径",
+        "WebSocket请求头配置",
+        "Host请求头，CDN分流必备，需与节点配置一致",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块，HTTPS加密核心",
+        "开启TLS加密，确保传输安全",
+        "TLS SNI扩展，服务器名称标识，CDN必备",
+        "uTLS指纹伪造配置，模拟浏览器TLS指纹，防特征识别",
+        "开启uTLS指纹伪造",
+        "伪造Chrome浏览器的TLS指纹，兼容性最好",
+        "uTLS配置块结束",
+        "TLS ALPN扩展，应用层协议协商，仅使用http/1.1兼容WS",
+        "ALPN协议列表",
+        "http/1.1协议，WebSocket兼容必备",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点1配置块结束",
+        "VLESS出站节点2，CF优选DigitalOcean域名节点",
+        "该节点的标签标识",
+        "节点服务器地址，Cloudflare优选域名",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，与其他节点统一",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，与节点统一",
+        "WebSocket请求头配置",
+        "Host请求头，与节点配置一致",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，与节点配置一致",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点2配置块结束",
+        "VLESS出站节点3，CF优选Shopify域名节点",
+        "该节点的标签标识",
+        "节点服务器地址，Cloudflare优选域名",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点3配置块结束",
+        "VLESS出站节点4，CF优选瑞典政府域名节点",
+        "该节点的标签标识",
+        "节点服务器地址，Cloudflare优选域名",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点4配置块结束",
+        "VLESS出站节点5，CF优选Udemy域名节点",
+        "该节点的标签标识",
+        "节点服务器地址，Cloudflare优选域名",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点5配置块结束",
+        "VLESS出站节点6，CF 198段直连IP节点",
+        "该节点的标签标识",
+        "节点服务器IP地址，Cloudflare 198段优选IP",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点6配置块结束",
+        "VLESS出站节点7，CF 104段A类IP节点",
+        "该节点的标签标识",
+        "节点服务器IP地址，Cloudflare 104段优选IP",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点7配置块结束",
+        "VLESS出站节点8，CF 104段优选高速IP节点1",
+        "该节点的标签标识",
+        "节点服务器IP地址，Cloudflare 104段优选高速IP",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点8配置块结束",
+        "VLESS出站节点9，CF 104段优选高速IP节点2",
+        "该节点的标签标识",
+        "节点服务器域名地址，Cloudflare优选节点域名",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点9配置块结束",
+        "VLESS出站节点10，CF 104段优选高速IP节点3",
+        "该节点的标签标识",
+        "节点服务器IP地址，Cloudflare 104段优选高速IP",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点10配置块结束",
+        "VLESS出站节点11，CF 172段优选高速IP节点",
+        "该节点的标签标识",
+        "节点服务器IP地址，Cloudflare 172段优选高速IP",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点11配置块结束",
+        "VLESS出站节点12，CF 104段优选高速IP节点4",
+        "该节点的标签标识",
+        "节点服务器IP地址，Cloudflare 104段优选高速IP",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点12配置块结束",
+        "VLESS出站节点13，CF优选CFGO域名节点",
+        "该节点的标签标识",
+        "节点服务器域名地址，Cloudflare优选公共域名",
+        "节点服务端口443",
+        "出站类型为vless",
+        "VLESS认证UUID，统一配置",
+        "传输层配置块",
+        "传输类型为ws，WebSocket协议",
+        "WebSocket请求路径，统一配置",
+        "WebSocket请求头配置",
+        "Host请求头，统一配置",
+        "请求头配置块结束",
+        "传输层配置块结束",
+        "TLS加密配置块",
+        "开启TLS加密",
+        "TLS SNI，统一配置",
+        "uTLS指纹伪造配置",
+        "开启uTLS",
+        "伪造Chrome浏览器指纹",
+        "uTLS配置块结束",
+        "TLS ALPN扩展",
+        "ALPN协议列表",
+        "http/1.1协议",
+        "ALPN协议列表结束",
+        "TLS加密配置块结束",
+        "VLESS节点13配置块结束",
+        "出站连接配置块结束",
+        "路由核心配置块，流量分流、规则匹配、动作执行核心模块",
+        "路由默认域名解析器，未指定解析器的域名默认使用alidns_udp",
+        "路由规则列表，按从上到下优先级匹配，匹配即停止",
+        "DNS流量劫持规则，接管系统53端口DNS请求",
+        "规则类型为logical，逻辑组合规则",
+        "逻辑模式为or，满足任意一个子规则即匹配",
+        "子规则列表",
+        "匹配目标端口为53的流量",
+        "子规则结束",
+        "匹配协议为dns的流量",
+        "子规则结束",
+        "子规则列表结束",
+        "执行hijack-dns动作，劫持DNS流量到sing-box自身DNS模块处理",
+        "DNS劫持规则结束",
+        "流量嗅探规则，开启全流量域名/协议嗅探，识别流量类型",
+        "执行sniff动作，开启流量嗅探，获取域名和协议信息",
+        "流量嗅探规则结束",
+        "小米路由器管理域名直连规则",
+        "匹配的域名后缀列表",
+        "小米路由器管理域名",
+        "域名后缀列表结束",
+        "匹配该规则的流量走DIRECT直连出站",
+        "小米路由器规则结束",
+        "Clash直连模式路由规则，直连模式下所有流量直连",
         "匹配Clash运行模式为direct直连模式",
-        "匹配到的所有流量走DIRECT直连出站 | 说明：兼容Clash的直连模式，该模式下所有流量全部直连，不经过代理，完全绕过所有分流规则",
-        "Clash Direct模式规则闭合",
-        "第五条路由规则：Clash Global模式全流量走全局代理",
+        "匹配该规则的流量走DIRECT直连出站",
+        "直连模式路由规则结束",
+        "Clash全局模式路由规则，全局模式下所有流量走GLOBAL出站",
         "匹配Clash运行模式为global全局模式",
-        "匹配到的所有流量走GLOBAL出站 | 说明：兼容Clash的全局模式，该模式下所有流量全部走代理，完全绕过所有分流规则",
-        "Clash Global模式规则闭合",
-        "第六条路由规则：内网私有IP流量直连",
-        "匹配目标IP为私有内网IP的流量，比如192.168.x.x、10.x.x.x、172.16.x.x等局域网网段",
-        "匹配到的流量走DIRECT直连出站 | 说明：确保能正常访问路由器、NAS、打印机、局域网内的其他设备，避免代理后无法访问内网资源",
-        "内网IP直连规则闭合",
-        "第七条路由规则：FakeIP网段流量走代理",
-        "匹配目标IP网段为198.18.0.0/15的流量，也就是我们配置的FakeIP网段",
-        "IP网段匹配列表闭合",
-        "匹配到的流量走PROXY代理出站 | 说明：FakeIP分配的虚拟IP必须走代理出站，才能正确转发到对应的目标域名，是FakeIP功能正常工作的核心规则",
-        "FakeIP流量代理规则闭合",
-        "第八条路由规则：广告流量全量拦截",
-        "匹配广告规则集列表，和DNS模块的广告拦截规则保持一致，实现双层拦截",
-        "匹配AdGuard广告过滤规则集geosite_adguard",
-        "匹配官方全量广告域名规则集geosite-category-ads-all",
-        "广告规则集匹配列表闭合",
-        "匹配到的广告流量执行reject拒绝动作 | 说明：从路由层直接拦截广告流量，和DNS层拦截形成双重保障，彻底拦截广告、追踪、埋点流量",
-        "广告流量拦截规则闭合",
-        "第九条路由规则：谷歌系域名走代理",
-        "匹配geosite-google谷歌系域名规则集，包含所有谷歌官方域名",
-        "匹配到的流量走PROXY代理出站 | 说明：确保所有谷歌系域名都走代理访问，避免漏匹配导致的访问失败",
-        "谷歌系域名代理规则闭合",
-        "第十条路由规则：国内常用域名直连",
-        "匹配域名后缀列表，包含国内常用的直连访问域名",
-        "匹配Steam游戏服务器域名steamserver.net",
-        "匹配知乎域名zhihu.com",
-        "匹配知乎静态资源域名zhimg.com",
-        "匹配京东域名jd.com",
-        "匹配京东静态资源域名360buyimg.com",
-        "匹配讯飞域名xfyun.cn",
-        "域名后缀匹配列表闭合",
-        "匹配到的流量走DIRECT直连出站 | 说明：这些国内站点直连访问速度最快，无需走代理，避免代理后访问延迟升高",
-        "国内常用域名直连规则闭合",
-        "第十一条路由规则：海外代理站点走代理",
-        "匹配proxy海外代理站点规则集",
-        "匹配到的流量走PROXY代理出站 | 说明：所有需要代理的海外站点，统一走代理出口",
-        "海外代理站点规则闭合",
-        "第十二条路由规则：海外游戏站点走代理",
-        "匹配games海外游戏规则集",
-        "匹配到的流量走PROXY代理出站 | 说明：海外游戏服务器统一走代理出口，确保游戏连接稳定",
-        "海外游戏站点规则闭合",
-        "第十三条路由规则：海外AI站点走代理",
-        "匹配ai海外AI站点规则集，包含ChatGPT、Claude、Midjourney等AI站点",
-        "匹配到的流量走PROXY代理出站 | 说明：海外AI站点统一走代理出口，确保正常访问",
-        "海外AI站点规则闭合",
-        "第十四条路由规则：国内直连规则集全量直连",
-        "匹配国内直连规则集列表，包含各类国内站点、服务的规则集",
-        "匹配内网私有地址规则集private",
-        "匹配国内域名规则集cn",
-        "匹配微软中国服务规则集microsoft-cn",
-        "匹配苹果中国服务规则集apple-cn",
-        "匹配谷歌中国服务规则集google-cn",
-        "匹配国内游戏规则集games-cn",
-        "匹配网络测试站点规则集networktest",
-        "国内直连规则集列表闭合",
-        "匹配到的流量走DIRECT直连出站 | 说明：所有国内服务、站点统一走直连出口，确保国内访问速度最快",
-        "国内直连规则集规则闭合",
-        "第十五条路由规则：强制域名解析",
-        "执行resolve解析动作 | 说明：对未匹配到上述规则的流量，强制使用sing-box的DNS模块进行域名解析，确保所有域名都经过我们配置的DNS规则处理，避免域名解析泄露",
-        "强制解析规则闭合",
-        "第十六条路由规则：Telegram IP段走代理",
-        "匹配telegramip Telegram官方IP段规则集",
-        "匹配到的流量走PROXY代理出站 | 说明：Telegram的IP段经常变动，使用官方规则集可确保所有Telegram流量都走代理，避免访问失败",
-        "Telegram IP段代理规则闭合",
-        "第十七条路由规则：中国IP段直连",
-        "匹配cnip中国IP段规则集，包含所有国内公网IP段",
-        "匹配到的流量走DIRECT直连出站 | 说明：确保国内IP的流量全部直连，避免代理后国内网站访问变慢，是IP分流的核心兜底规则",
-        "中国IP段直连规则闭合",
-        "第十八条路由规则：安卓YouTube APP走代理",
-        "匹配安卓应用包名列表，包含YouTube官方版和ReVanced改版",
-        "匹配YouTube官方版包名com.google.android.youtube",
-        "匹配YouTube ReVanced改版包名app.revanced.android.youtube",
-        "应用包名匹配列表闭合",
-        "匹配到的APP流量走PROXY代理出站 | 说明：安卓端专属规则，针对APP进行分流，确保YouTube APP全程走代理，避免系统代理失效导致的访问失败",
-        "YouTube APP代理规则闭合",
-        "第十九条路由规则：安卓Telegram APP走代理",
-        "匹配安卓应用包名列表，包含Telegram官方版和测试版",
-        "匹配Telegram官方版包名org.telegram.messenger",
-        "匹配Telegram测试版包名org.telegram.messenger.beta",
-        "应用包名匹配列表闭合",
-        "匹配到的APP流量走PROXY代理出站 | 说明：安卓端专属规则，针对APP进行分流，确保Telegram APP全程走代理，提升连接稳定性",
-        "Telegram APP代理规则闭合",
-        "路由规则列表闭合，结束分流规则定义",
-        "规则集远程定义列表，提前定义所有需要用到的远程规则集，分流规则和DNS规则中可直接通过标签引用",
-        "第一个规则集：geosite-category-ads-all 官方全量广告域名规则集",
-        "规则集标签，用于其他配置项引用，全局唯一",
-        "规则集类型为remote远程规则集，sing-box会自动从指定URL下载规则集文件",
-        "规则集格式为binary二进制格式，即sing-box专用的srs格式 | 说明：二进制格式加载速度远快于文本格式，占用内存更低，是sing-box的推荐格式",
-        "规则集文件下载地址，使用jsDelivr CDN加速，官方维护的规则集，更新及时",
-        "规则集下载流量走PROXY代理出站 | 说明：jsDelivr在国内访问不稳定，走代理可确保规则集能正常下载更新",
-        "规则集自动更新间隔设置为48小时 | 说明：每48小时自动更新一次规则集，平衡规则的时效性和下载流量消耗",
-        "全量广告域名规则集配置闭合",
-        "第二个规则集：geosite_adguard AdGuard广告过滤规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，AdGuard官方过滤规则转换的sing-box专用规则集，广告拦截覆盖范围更广",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "AdGuard广告规则集配置闭合",
-        "第三个规则集：geosite-google 谷歌系域名规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，官方维护的谷歌系全域名规则集",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "谷歌系域名规则集配置闭合",
-        "第四个规则集：proxy 海外代理站点规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的全量海外代理站点规则集，覆盖绝大多数需要代理的网站",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "海外代理站点规则集配置闭合",
-        "第五个规则集：games 海外游戏规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的海外游戏服务器域名/IP规则集",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "海外游戏规则集配置闭合",
-        "第六个规则集：ai 海外AI站点规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的海外AI站点规则集，覆盖ChatGPT、Claude等主流AI平台",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "海外AI站点规则集配置闭合",
-        "第七个规则集：private 内网私有地址规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的内网私有地址规则集",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "内网私有地址规则集配置闭合",
-        "第八个规则集：cn 国内域名规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的全量国内域名规则集，覆盖绝大多数国内网站",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "国内域名规则集配置闭合",
-        "第九个规则集：microsoft-cn 微软中国服务规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的微软中国服务规则集，确保Office、OneDrive等国内服务直连",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "微软中国服务规则集配置闭合",
-        "第十个规则集：apple-cn 苹果中国服务规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的苹果中国服务规则集，确保App Store、iCloud等国内服务直连",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "苹果中国服务规则集配置闭合",
-        "第十一个规则集：google-cn 谷歌中国服务规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的谷歌中国可直连服务规则集",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "谷歌中国服务规则集配置闭合",
-        "第十二个规则集：games-cn 国内游戏规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的国内游戏服务器规则集，确保国内游戏直连访问",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "国内游戏规则集配置闭合",
-        "第十三个规则集：networktest 网络测试站点规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的网络测试站点规则集，确保测速、IP检测站点直连访问，准确获取本地网络信息",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "网络测试站点规则集配置闭合",
-        "第十四个规则集：telegramip Telegram官方IP段规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的Telegram官方IP段规则集，实时更新",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "Telegram IP段规则集配置闭合",
-        "第十五个规则集：cnip 中国IP段规则集",
-        "规则集标签，全局唯一",
-        "规则集类型为remote远程",
-        "规则集格式为binary二进制",
-        "规则集文件下载地址，社区维护的全量中国公网IP段规则集，覆盖国内所有IP段",
-        "规则集下载流量走PROXY代理出站",
-        "自动更新间隔48小时",
-        "中国IP段规则集配置闭合",
-        "规则集定义列表闭合，结束规则集配置",
-        "【路由兜底配置】所有未匹配到上述规则的流量，默认走PROXY代理出站 | 说明：实现「国内流量直连，未匹配的海外流量默认走代理」的核心逻辑，避免海外站点漏匹配导致的访问失败",
-        "开启自动检测网络接口 | 说明：sing-box会自动选择最优的出口网卡，避免多网卡设备（比如双网口路由器、同时开WiFi和有线的设备）出现路由异常、流量无法转发的问题，多网卡设备必须开启",
-        "路由配置模块闭合，结束分流相关配置",
-        "实验性功能模块，包含Clash API、缓存文件等非核心但非常实用的功能，均为sing-box稳定支持的特性，无兼容性问题",
-        "Clash API配置模块，用于对接Clash可视化面板（如metacubexd、yacd），实现节点切换、流量监控、规则查看、日志实时查看等功能",
-        "Clash API监听地址和端口，127.0.0.1:9090仅本机可访问 | 说明：如果需要局域网内其他设备访问面板，需改为0.0.0.0:9090，同时开放防火墙对应端口",
-        "Clash UI面板的本地存放目录，自动下载的面板文件会解压到该目录",
-        "Clash UI面板的下载地址，使用metacubexd面板，功能全面、兼容性好、适配移动端，是sing-box的首选面板",
-        "UI面板下载流量走PROXY代理出站 | 说明：确保面板文件能正常下载，避免国内网络无法访问GitHub导致下载失败",
-        "Clash API的访问密钥，用于远程访问面板时的身份验证 | 注意：建议自行修改为自己的随机密钥，避免未授权访问，提升安全性",
-        "Clash默认运行模式设置为rule规则模式 | 说明：sing-box启动后默认使用规则分流模式，可选值rule/global/direct",
-        "Clash API配置模块闭合",
-        "缓存文件配置模块，把sing-box的缓存数据持久化到硬盘，重启后无需重新加载规则集、重建DNS缓存，大幅提升启动速度",
-        "开启缓存文件功能 | 强烈建议开启，尤其是路由器、开发板等低性能设备，启动速度提升非常明显，同时避免重启后规则集重新下载",
-        "缓存文件的保存路径，默认保存在sing-box的工作目录，可自行修改为绝对路径",
-        "缓存ID，用于区分不同配置的缓存文件，避免多配置共用缓存导致异常",
-        "开启FakeIP记录持久化存储 | 说明：重启sing-box后，之前分配的FakeIP和域名的映射关系会保留，无需重新分配，提升重启后的访问速度，避免首次连接卡顿",
-        "缓存文件配置模块闭合",
-        "实验性功能模块闭合",
-        "sing-box配置根对象闭合，JSON格式结束，必须和开头的{成对对应，否则配置会报语法错误"
+        "匹配该规则的流量走GLOBAL全局出站",
+        "全局模式路由规则结束",
+        "私有IP地址直连规则，内网流量直连不走代理",
+        "匹配目标IP为私有内网地址的流量",
+        "匹配该规则的流量走DIRECT直连出站",
+        "私有IP直连规则结束",
+        "FakeIP地址段代理规则，虚拟IP流量走代理",
+        "匹配的目标IP CIDR地址段列表",
+        "FakeIP使用的198.18.0.0/15地址段",
+        "CIDR地址段列表结束",
+        "匹配该规则的流量走PROXY代理出站",
+        "FakeIP代理规则结束",
+        "广告域名拦截规则，路由层二次拦截广告流量",
+        "匹配的广告规则集列表",
+        "AdGuard广告过滤规则集",
+        "sing-geosite全量广告分类规则集",
+        "广告规则集列表结束",
+        "匹配到广告域名时执行拒绝动作，直接拦截",
+        "广告拦截规则结束",
+        "Google服务域名分流规则，Google相关站点走PROXY出站",
+        "匹配geosite-google规则集，全量Google相关域名",
+        "匹配该规则的流量走PROXY代理出站",
+        "Google服务分流规则结束",
+        "国内常用域名直连规则，国内站点强制直连",
+        "匹配的域名后缀列表",
+        "Steam游戏服务器域名",
+        "知乎主域名",
+        "知乎静态资源域名",
+        "京东主域名",
+        "京东静态资源域名",
+        "讯飞听见域名",
+        "域名后缀列表结束",
+        "匹配该规则的流量走DIRECT直连出站",
+        "国内域名直连规则结束",
+        "代理域名分流规则，境外代理站点走PROXY出站",
+        "匹配proxy规则集，包含境外需代理的站点域名",
+        "匹配该规则的流量走PROXY代理出站",
+        "代理域名分流规则结束",
+        "游戏域名分流规则，境外游戏站点走PROXY出站",
+        "匹配games规则集，包含境外游戏相关域名",
+        "匹配该规则的流量走PROXY代理出站",
+        "游戏域名分流规则结束",
+        "AI服务域名分流规则，AI站点走PROXY出站",
+        "匹配ai规则集，包含ChatGPT、Midjourney等AI站点域名",
+        "匹配该规则的流量走PROXY代理出站",
+        "AI分流规则结束",
+        "国内站点规则集直连规则，多规则集叠加国内流量直连",
+        "匹配的国内规则集列表",
+        "私有内网地址规则集",
+        "中国域名规则集",
+        "微软中国服务规则集",
+        "苹果中国服务规则集",
+        "Google中国服务规则集",
+        "国内游戏规则集",
+        "网络测试站点规则集",
+        "国内规则集列表结束",
+        "匹配该规则的流量走DIRECT直连出站",
+        "国内规则集直连规则结束",
+        "强制域名解析规则，对未匹配的域名强制执行DNS解析",
+        "执行resolve动作，强制进行DNS解析，为后续IP规则匹配提供依据",
+        "强制解析规则结束",
+        "Telegram IP分流规则，Telegram相关IP走PROXY出站",
+        "匹配telegramip规则集，Telegram官方IP段",
+        "匹配该规则的流量走PROXY代理出站",
+        "Telegram IP分流规则结束",
+        "中国IP段直连规则，国内IP流量强制直连",
+        "匹配cnip规则集，全量中国IP地址段",
+        "匹配该规则的流量走DIRECT直连出站",
+        "中国IP直连规则结束",
+        "YouTube安卓应用分流规则，指定应用包名走代理",
+        "匹配的安卓应用包名列表",
+        "YouTube官方安卓应用包名",
+        "YouTube Revanced改版安卓应用包名",
+        "应用包名列表结束",
+        "匹配该规则的流量走PROXY代理出站",
+        "YouTube应用分流规则结束",
+        "Telegram安卓应用分流规则，指定应用包名走代理",
+        "匹配的安卓应用包名列表",
+        "Telegram官方安卓应用包名",
+        "Telegram测试版安卓应用包名",
+        "应用包名列表结束",
+        "匹配该规则的流量走PROXY代理出站",
+        "Telegram应用分流规则结束",
+        "路由规则列表结束",
+        "远程规则集列表，定义所有需要远程加载的分流规则集",
+        "全量广告分类规则集配置",
+        "规则集的标签标识，用于规则中引用",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary，sing-box专用二进制格式，加载速度快",
+        "规则集下载地址，jsdelivr CDN加速",
+        "下载该规则集使用的转发出站，PROXY代理保证可访问",
+        "规则集更新间隔，每48小时更新一次",
+        "广告规则集配置块结束",
+        "AdGuard广告过滤规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，AdGuard第三方优化规则",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "AdGuard规则集配置块结束",
+        "Google服务规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，官方sing-geosite规则",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "Google规则集配置块结束",
+        "代理站点规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化代理规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "代理规则集配置块结束",
+        "游戏站点规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化游戏规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "游戏规则集配置块结束",
+        "AI站点规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化AI规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "AI规则集配置块结束",
+        "私有内网规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化内网规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "私有内网规则集配置块结束",
+        "中国域名规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化中国域名规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "中国域名规则集配置块结束",
+        "微软中国服务规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化微软中国规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "微软中国规则集配置块结束",
+        "苹果中国服务规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化苹果中国规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "苹果中国规则集配置块结束",
+        "Google中国服务规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化Google中国规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "Google中国规则集配置块结束",
+        "国内游戏规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化国内游戏规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "国内游戏规则集配置块结束",
+        "网络测试站点规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化网络测试规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "网络测试规则集配置块结束",
+        "Telegram IP规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化Telegram IP规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "Telegram IP规则集配置块结束",
+        "中国IP段规则集配置",
+        "规则集的标签标识",
+        "规则集类型为remote，远程加载",
+        "规则集格式为binary",
+        "规则集下载地址，第三方优化中国IP段规则集",
+        "下载使用的转发出站，PROXY代理保证可访问",
+        "更新间隔48小时",
+        "中国IP段规则集配置块结束",
+        "远程规则集列表结束",
+        "路由最终兜底出站，所有未匹配规则的流量默认走PROXY代理出站",
+        "开启自动检测网络接口，避免多网卡环境下路由异常",
+        "路由核心配置块结束",
+        "实验性功能配置块，包含Clash API、缓存等功能",
+        "Clash API配置块，兼容Clash控制面板、客户端UI管理",
+        "Clash API外部控制器监听地址，本地环回地址9090端口",
+        "Web UI存放目录，ui文件夹",
+        "Web UI压缩包下载地址，metacubexd控制面板",
+        "Web UI下载使用的出站，走PROXY代理保证可访问",
+        "Clash API访问密钥，用于身份认证",
+        "Clash默认运行模式，rule规则模式",
+        "Clash API配置块结束",
+        "缓存文件配置块，持久化缓存DNS、FakeIP等数据，重启不丢失",
+        "开启缓存文件功能",
+        "缓存文件存放路径，cache.db数据库文件",
+        "缓存唯一ID，区分不同配置的缓存数据",
+        "开启FakeIP映射关系持久化存储",
+        "缓存文件配置块结束",
+        "实验性功能配置块结束",
+        "sing-box完整配置根对象结束"
     ];
-    // HTML转义函数，防止XSS和语法渲染异常
+    // 渲染表格
+    const tbody = document.getElementById('table-body');
+    let html = '';
+    for (let i = 0; i < configLines.length; i++) {
+        html += '<tr>';
+        html += '<td class="line-num">' + (i + 1) + '</td>';
+        html += '<td class="code-cell">' + escapeHtml(configLines[i]) + '</td>';
+        html += '<td class="comment-cell">' + escapeHtml(comments[i] || '') + '</td>';
+        html += '</tr>';
+    }
+    tbody.innerHTML = html;
     function escapeHtml(text) {
-        return text.replace(/&/g, '&amp;')
-                   .replace(/</g, '&lt;')
-                   .replace(/>/g, '&gt;')
-                   .replace(/"/g, '&quot;');
+        return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
-    // 渲染表格函数，逐行生成表格内容
-    function renderTable() {
-        const tbody = document.getElementById('table-body');
-        let html = '';
-        for (let i = 0; i < configLines.length; i++) {
-            html += '<tr>';
-            html += '<td class="line-num">' + (i + 1) + '</td>';
-            html += '<td class="code-cell">' + escapeHtml(configLines[i]) + '</td>';
-            html += '<td class="comment-cell">' + escapeHtml(comments[i] || '') + '</td>';
-            html += '</tr>';
-        }
-        tbody.innerHTML = html;
-    }
-    // 一键复制完整配置功能，兼容全浏览器
-    function initCopyBtn() {
-        const copyBtn = document.getElementById('copyConfigBtn');
-        const fullConfig = configLines.join('\n');
-        
-        copyBtn.addEventListener('click', async () => {
-            try {
-                // 现代浏览器API
-                await navigator.clipboard.writeText(fullConfig);
-                copyBtn.textContent = '✅ 复制成功';
-                copyBtn.classList.add('success');
-                setTimeout(() => {
-                    copyBtn.textContent = '📋 一键复制完整配置';
-                    copyBtn.classList.remove('success');
-                }, 2000);
-            } catch (err) {
-                // 老旧浏览器降级方案
-                const textarea = document.createElement('textarea');
-                textarea.value = fullConfig;
-                textarea.style.position = 'fixed';
-                textarea.style.opacity = '0';
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                
-                copyBtn.textContent = '✅ 复制成功';
-                copyBtn.classList.add('success');
-                setTimeout(() => {
-                    copyBtn.textContent = '📋 一键复制完整配置';
-                    copyBtn.classList.remove('success');
-                }, 2000);
-            }
-        });
-    }
-    // 日夜模式切换功能，支持本地存储记忆
-    function initThemeSwitcher() {
-        const themeBtns = document.querySelectorAll('.theme-btn');
-        const body = document.body;
-        
-        function setTheme(theme) {
-            body.classList.remove('light', 'dark');
-            if (theme === 'light') {
-                body.classList.add('light');
-            } else if (theme === 'dark') {
-                body.classList.add('dark');
-            }
-            localStorage.setItem('singbox_theme', theme);
-            
-            // 更新按钮激活状态
-            themeBtns.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.theme === theme);
-            });
-        }
-        // 初始化主题，读取本地存储
-        const savedTheme = localStorage.getItem('singbox_theme') || 'auto';
-        if (savedTheme !== 'auto') {
-            setTheme(savedTheme);
-        }
-        // 绑定按钮点击事件
+    // 日夜模式切换
+    const themeBtns = document.querySelectorAll('.theme-btn');
+    const body = document.body;
+    
+    function setTheme(theme) {
+        body.classList.remove('light', 'dark');
+        if (theme === 'light') body.classList.add('light');
+        else if (theme === 'dark') body.classList.add('dark');
+        localStorage.setItem('theme', theme);
         themeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const theme = btn.dataset.theme;
-                setTheme(theme);
-            });
+            btn.classList.toggle('active', btn.dataset.theme === theme);
         });
     }
-    // 页面加载完成后初始化所有功能
-    document.addEventListener('DOMContentLoaded', () => {
-        renderTable();
-        initCopyBtn();
-        initThemeSwitcher();
+    const savedTheme = localStorage.getItem('theme') || 'auto';
+    if (savedTheme === 'auto') {
+        themeBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === 'auto'));
+    } else {
+        setTheme(savedTheme);
+    }
+    themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            if (theme === 'auto') {
+                body.classList.remove('light', 'dark');
+                localStorage.setItem('theme', 'auto');
+                themeBtns.forEach(b => b.classList.toggle('active', b.dataset.theme === 'auto'));
+            } else {
+                setTheme(theme);
+            }
+        });
     });
 })();
 </script>
